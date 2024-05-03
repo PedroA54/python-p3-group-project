@@ -1,8 +1,12 @@
 # lib/helpers.py
+from rich.console import Console
+
+console = Console()
+EXIT_WORDS = ["4", "exit", "quit", "c"]
 
 
-def helper_1():
-    print("Performing useful function#1.")
+def create_user():
+    print("Create User")
 
 
 def helper_2():
