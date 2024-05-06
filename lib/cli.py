@@ -1,40 +1,33 @@
 # lib/cli.py
 from helpers import (
-welcome,
-how_to_use,
-start,
-create_user,
-delete_user,
-exit_program, 
+    menu,
+    how_to_use,
+    start,
+    create_user,
+    delete_user,
+    exit_program,
 )
+
+EXIT_WORDS = ["4", "exit", "quit"]
+
 
 def main():
     while True:
         menu()
         choice = input("> ")
-        if choice == "1":
+        if choice == "0":
             how_to_use()
-        elif choice == "2":
+        elif choice == "1":
             start()
-        elif choice == "3":
+        elif choice == "2":
             create_user()
-        elif choice == "4":
+        elif choice == "3":
             delete_user()
-        elif choice == "0":
+        elif choice == "4":
             exit_program()
         else:
             print("Invalid choice!")
 
 
-def menu():
-    print("Please select an option:")
-    print("0. Exit")
-    print("1. How To Use")
-    print("2. Get Started")
-    print("3. Create User")
-    print("4. Delete User")
-
-
 if __name__ == "__main__":
-    welcome()
     main()

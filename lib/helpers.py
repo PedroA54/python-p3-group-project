@@ -1,11 +1,12 @@
 # lib/helpers.py
 from rich.console import Console
+from time import sleep
 
 console = Console()
-EXIT_WORDS = ["0", "exit", "quit"]
+EXIT_WORDS = ["4", "exit", "quit"]
 
 
-def welcome():
+def menu():
     console.print(
         """
     _   ______  ___       __________  ___   ________ __ __________ 
@@ -17,14 +18,20 @@ def welcome():
         style="green",
     )
 
+    console.print("Please select an option:")
+    console.print("0. How To Use")
+    console.print("1. Get Started")
+    console.print("2. Create User")
+    console.print("3. Delete User")
+    console.print("4. Exit")
+
 
 def how_to_use():
-    console.print("Welcome to NBA Stat Tracker!", style="subhead")
-    console.print("Here is how it works:", style="subhead")
+    console.print("Welcome to NBA Stat Tracker!")
+    console.print("Here is how it works:")
     console.print("1. Select 'Get Started'")
     console.print(
-        """2. Choose what statistics you would like to see: Choose from a team's current seasonal record
-          or their starting roster"""
+        """2. Choose what statistics you would like to see: Choose from a team's current seasonal recordor their starting roster"""
     )
     console.print(
         "3. Search what team whose statistics you'd like to see by their name."
@@ -33,7 +40,7 @@ def how_to_use():
 
 
 def start():
-    console.print("Please select an option:", style="subhead")
+    console.print("Please select an option:")
     console.print("0. Exit the program")
     console.print("1. Track Teams")
     console.print("2. Track Teams Starting Roster")
