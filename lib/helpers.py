@@ -1,4 +1,7 @@
 # lib/helpers.py
+from rich.console import Console
+
+console = Console()
 
 EXIT_WORDS = ["0", "exit", "quit"]
 def welcome():

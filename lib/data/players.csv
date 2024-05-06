@@ -1,0 +1,151 @@
+Player, Team, Position, Points, Assists, Rebounds
+Jrue Holiday, Bucks, PG, 17.7, 6.1, 4.5
+Derrick White, Celtics, SG, 9.1, 3.1, 2.3
+Jaylen Brown, Celtics, SF, 24.7, 2.8, 6.1
+Jayson Tatum, Celtics, PF, 26.4, 4.3, 7.4
+Kristaps Porzingis, Celtics, C, 18.9, 1.2, 8.2
+Jalen Brunson, Knicks, PG, 15.6, 5.2, 3.5
+Donte DiVincenzo, Knicks, SG, 8.3, 3.6, 5.1
+Josh Hart, Knicks, SF, 13.2, 1.9, 6.5
+OG Anunoby, Knicks, PF, 16.7, 2.7, 5.8
+Isaiah Haretenstein, Knicks, C, 5.9, 0.8, 4.7
+Damien Lillard, Bucks, PG, 24.5, 7.1, 4.6
+Patrick Beverly, Bucks, SG, 7.2, 3.9, 4.1
+Khris Middleton, Bucks, SF, 20.1, 5.4, 6.0
+Giannis Antetokounmpo, Bucks, PF, 29.8, 6.2, 11.0
+Brook Lopez, Bucks, C, 9.2, 0.7, 5.0
+Darius Garland, Cavaliers, PG, 20.3, 8.8, 3.2
+Donovan Mitchell, Cavaliers, SG, 25.6, 5.7, 4.6
+Max Strus, Cavaliers, SF, 12.4, 1.6, 3.9
+Evan Mobley, Cavaliers, PF, 16.5, 2.4, 8.6
+Jarret Allen, Cavaliers, C, 13.4, 1.1, 10.7
+Jalen Suggs, Magic, PG, 14.1, 6.0, 4.5
+Gary Harris, Magic, SG, 8.7, 2.3, 3.8
+Franz Wagner, Magic, SF, 11.5, 3.0, 5.2
+Paolo Banchero, Magic, PF, 9.8, 1.5, 6.7
+Wendell Carter Jr., Magic, C, 12.6, 1.8, 8.0
+Tyrese Haliburton, Pacers, PG, 15.3, 6.9, 3.6
+Andrew Nembhard, Pacers, SG, 7.4, 4.2, 3.1
+Aaron Nesmith, Pacers, SF, 9.1, 1.3, 4.5
+Pascal Siakam, Pacers, PF, 18.2, 4.5, 7.3
+Myles Turner, Pacers, C, 10.6, 1.8, 6.7
+Tyrese Maxey, 76ers, PG, 16.1, 4.6, 3.2
+Kyle Lowry, 76ers, SG, 10.6, 7.2, 4.1
+Kelly Oubre Jr., 76ers, SF, 15.4, 2.9, 5.6
+Tobias Harris, 76ers, PF, 18.9, 3.5, 6.2
+Joel Embiid, 76ers, C, 27.9, 4.2, 10.2
+Terry Rozier, Heat, PG, 19.8, 4.4, 3.9
+Tyler Herro, Heat, SG, 15.1, 3.4, 4.8
+Jimmy Butler, Heat, SF, 21.5, 7.1, 6.7
+Nikola Jovic, Heat, PF, 10.2, 1.6, 7.3
+Bam Adebayo, Heat, C, 19.2, 5.4, 10.0
+Coby White, Bulls, PG, 15.6, 5.1, 3.8
+Zach LaVine, Bulls, SG, 27.5, 5.2, 5.3
+Alex Caruso, Bulls, SF, 8.9, 4.7, 3.9
+DeMar DeRozan, Bulls, PF, 23.1, 6.9, 5.2
+Nikola Vucevic, Bulls, C, 17.3, 3.2, 10.2
+Trae Young, Hawks, PG, 25.6, 9.4, 4.0
+Dejounte Murray, Hawks, SG, 20.3, 8.5, 7.2
+Bogdan Bogdanovic, Hawks, SF, 14.7, 3.1, 3.9
+Jalen Johnson, Hawks, PF, 8.5, 1.8, 5.6
+Clint Capela, Hawks, C, 12.6, 0.8, 13.6
+Dennis Schroder, Nets, PG, 15.4, 4.8, 3.2
+Cam Thomas, Nets, SG, 12.7, 1.9, 2.6
+Mikal Bridges, Nets, SF, 13.6, 3.3, 4.7
+Dorian Finney-Smith, Nets, PF, 8.7, 1.6, 5.2
+Nic Claxton, Nets, C, 9.8, 1.1, 7.3
+Immanuel Quickley, Raptors, PG, 14.6, 5.8, 2.9
+Gary Trent Jr., Raptors, SG, 15.7, 2.5, 3.6
+RJ Barrett, Raptors, SF, 18.1, 3.9, 5.5
+Scottie Barnes, Raptors, PF, 11.3, 4.1, 7.2
+Jakob Poeltl, Raptors, C, 9.2, 1.3, 6.4
+LaMelo Ball, Hornets, PG, 19.8, 7.3, 6.8
+Cody Martin, Hornets, SG, 8.6, 3.2, 5.1
+Brandon Miller, Hornets, SF, 7.9, 2.4, 3.8
+Miles Bridges, Hornets, PF, 20.9, 3.6, 6.8
+Mark Williams, Hornets, C, 5.3, 0.9, 4.7
+Tyus Jones, Wizards, PG, 9.5, 5.6, 2.1
+Bilal Coulibaly, Wizards, SG, 6.3, 2.1, 3.7
+Deni Avdija, Wizards, SF, 7.0, 3.8, 3.9
+Kyle Kuzma, Wizards, PF, 12.9, 3.5, 6.2
+Marvin Bagley III, Wizards, C, 7.2, 1.4, 4.6
+Cade Cunningham, Pistons, PG, 15.1, 6.2, 3.8
+Jaden Ivey, Pistons, SG, 9.5, 3.1, 2.8
+Ausar Thompson, Pistons, SF, 6.3, 2.4, 4.5
+Simone Fontecchio, Pistons, PF, 7.9, 1.9, 3.2
+Jalen Duren, Pistons, C, 5.6, 0.8, 3.7
+Shai Gilgeous-Alexander, Thunder, PG, 23.7, 7.3, 4.7
+Josh Giddey, Thunder, SG, 14.5, 6.1, 7.8
+Luguentz Dort, Thunder, SF, 16.3, 1.8, 3.6
+Jalen Williams, Thunder, PF, 8.9, 2.3, 5.6
+Chet Holmgren, Thunder, C, 7.6, 0.9, 5.4
+Jamal Murray, Nuggets, PG, 21.8, 5.6, 4.0
+Kentavious Caldwell-Pope, Nuggets, SG, 10.3, 2.5, 3.5
+Michael Porter Jr., Nuggets, SF, 22.5, 1.7, 7.2
+Aaron Gordon, Nuggets, PF, 13.2, 3.3, 6.8
+Nikola Jokic, Nuggets, C, 26.9, 8.4, 13.3
+Mike Conley, Timberwolves, PG, 12.4, 5.8, 2.6
+Anthony Edwards, Timberwolves, SG, 23.3, 4.6, 4.8
+Jaden McDaniels, Timberwolves, SF, 7.8, 2.1, 3.8
+Karl-Anthony Towns, Timberwolves, PF, 24.6, 4.5, 10.4
+Rudy Gobert, Timberwolves, C, 14.5, 1.1, 13.4
+James Harden, Clippers, PG, 24.6, 8.1, 7.9
+Terance Mann, Clippers, SG, 10.1, 3.3, 5.1
+Paul George, Clippers, SF, 24.1, 5.2, 7.5
+Kawhi Leonard, Clippers, PF, 25.1, 4.3, 6.6
+Ivica Zubac, Clippers, C, 8.4, 1.2, 7.2
+Luka Doncic, Mavericks, PG, 28.0, 8.8, 8.5
+Kyrie Irving, Mavericks, SG, 26.9, 7.0, 4.8
+Derrick Jones Jr., Mavericks, SF, 6.8, 1.4, 3.3
+P.J. Washington, Mavericks, PF, 10.2, 2.0, 6.6
+Daniel Gafford, Mavericks, C, 6.7, 0.5, 4.6
+Devin Booker, Suns, PG, 25.6, 5.7, 4.3
+Bradley Beal, Suns, SG, 26.7, 5.3, 3.6
+Grayson Allen, Suns, SF, 9.6, 2.3, 3.3
+Kevin Durant, Suns, PF, 27.5, 5.8, 7.1
+Jusuf Nurkic, Suns, C, 10.2, 1.4, 8.1
+CJ McCollum, Pelicans, PG, 22.8, 6.2, 3.6
+Desmond Bane, Pelicans, SG, 14.9, 2.8, 3.9
+Brandon Ingram, Pelicans, SF, 23.4, 4.4, 5.5
+Herbert Jones, Pelicans, PF, 7.3, 2.6, 5.2
+Zion Williamson, Pelicans, C, 27.0, 4.2, 9.2
+D'Angelo Russell, Lakers, PG, 20.7, 6.4, 3.7
+Austin Reaves, Lakers, SG, 8.9, 2.1, 3.8
+LeBron James, Lakers, SF, 24.9, 7.9, 7.2
+Rui Hachimura, Lakers, PF, 11.7, 2.3, 5.7
+Anthony Davis, Lakers, C, 23.2, 3.1, 9.2
+De'Aaron Fox, Kings, PG, 24.7, 7.2, 3.8
+Kevin Huerter, Kings, SG, 12.3, 4.1, 4.3
+Harrison Barnes, Kings, SF, 15.9, 2.6, 6.1
+Keegan Murray, Kings, PF, 10.2, 1.8, 4.7
+Domantas Sabonis, Kings, C, 17.1, 5.0, 11.4
+Stephen Curry, Warriors, PG, 32.0, 7.1, 5.5
+Klay Thompson, Warriors, SG, 18.2, 2.7, 3.9
+Andrew Wiggins, Warriors, SF, 20.4, 4.3, 5.8
+Draymond Green, Warriors, PF, 7.1, 8.9, 7.5
+Trayce Jackson-Davis, Warriors, C, 9.6, 1.3, 6.7
+Fred VanVleet, Rockets, PG, 18.0, 6.9, 3.9
+Jalen Green, Rockets, SG, 17.4, 3.5, 4.1
+Dillon Brooks, Rockets, SF, 16.5, 2.2, 3.8
+Jabari Smith Jr., Rockets, PF, 11.9, 1.8, 5.1
+Alperen Sengun, Rockets, C, 10.3, 2.5, 6.3
+Keyonte George, Jazz, PG, 14.7, 5.6, 3.2
+Collin Sexton, Jazz, SG, 16.0, 3.1, 3.7
+Lauri Markkanen, Jazz, SF, 11.8, 1.7, 5.0
+Taylor Hendricks, Jazz, PF, 9.5, 2.9, 4.3
+John Collins, Jazz, C, 13.7, 1.3, 8.2
+Ja Morant, Grizzlies, PG, 30.1, 7.1, 4.8
+Marcus Smart, Grizzlies, SG, 13.5, 5.8, 3.7
+Desmond Bane, Grizzlies, SF, 14.9, 2.8, 3.9
+Vince Williams Jr., Grizzlies, PF, 7.3, 1.6, 4.1
+Jaren Jackson Jr., Grizzlies, C, 15.2, 1.0, 6.7
+Tre Jones, Spurs, PG, 8.7, 4.2, 2.9
+Devin Vassell, Spurs, SG, 9.3, 3.7, 3.7
+Julian Champagnie, Spurs, SF, 7.2, 1.4, 3.8
+Jeremy Sochan, Spurs, PF, 5.3, 1.2, 3.1
+Victor Wembanyama, Spurs, C, 6.5, 1.0, 4.9
+Scoot Henderson, Trail Blazers, PG, 14.5, 4.1, 3.3
+Anfernee Simons, Trail Blazers, SG, 18.1, 3.2, 4.5
+Shaedon Sharpe, Trail Blazers, SF, 10.3, 1.9, 3.8
+Jerami Grant, Trail Blazers, PF, 18.6, 2.7, 4.9
+Deandre Ayton, Trail Blazers, C, 18.2, 2.0, 11.4
