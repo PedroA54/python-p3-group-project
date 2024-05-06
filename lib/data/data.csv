@@ -1,19 +1,19 @@
-NbaTeam, City, Wins, Losses, Championchips, Starting 5
-Celtics,
-Knicks,
-Bucks,
-Cavaliers,
-Magic,
-Pacers,
-76ers,
-Heat,
-Bulls,
-Hawks,
-Nets,
-Raptors,
-Hornets,
-Wizards,
-Pistons,
+NbaTeam, City, Wins, Losses, Championchips, PG, SG, SF, PF, C
+Celtics, Boston, 64, 18, 17, Jrue Holiday, Derrick White, Jaylen Brown, Jayson Tatum, Kristaps Porzingis
+Knicks, New York City, 50, 32, 2, Jalen Brunson, Donte DiVincenzo, Josh Hart, OG Anunoby, Isaiah Haretenstein
+Bucks, Milwaukee, 49, 33, 2, Damien Lillard, Patrick Beverly, Khris Middleton, Giannis Antetokounmpo, Brook Lopez"
+Cavaliers, Clevland, 48, 34, 1, "Darius Garland, Donovan Mitchell, Max Strus, Evan Mobley, Jarret Allen
+Magic, Orlando, 47, 35, 0, Jalen Suggs, Gary Harris, Franz Wagner, Paolo Banchero, Wendell Carter Jr.
+Pacers, Indiana, 47, 35, 0, Tyrese Haliburton, Andrew Nembhard, Aaron Nesmith, Pascal Siakam, Myles Turner
+76ers, Philadephia, 47, 35, 3, Tyrese Maxey, Kyle Lowry, Kelly Oubre Jr., Tobias Harris, Joel Embiid
+Heat, Miami, 46, 36, 3, Terry Rozier, Tyler Herro, Jimmy Butler, Nikola Jovic, Bam Adebayo
+Bulls, Chicago, 39, 43, 6, Coby White, Zach LaVine, Alex Caruso, DeMar DeRozan, Nikola Vucevic
+Hawks, Atlanta, 36, 46, 1, Trae Young, Dejounte Murray, Bogdan Bogdanovic, Jalen Johnson, Clint Capela
+Nets, Brooklyn, 32, 50, 0, Dennis Schroder, Cam Thomas, Mikal Bridges, Dorian Finney-Smith, Nic Claxton
+Raptors, Toronto, 25, 57, 1, Immanuel Quickley, Gary Trent Jr., RJ Barrett, Scottie Barnes, Jakob Poeltl
+Hornets, Charlotte, 21, 61, 0, LaMelo Ball, Cody Martin, Brandon Miller, Miles Bridges, Mark Williams
+Wizards, Washington, 15, 67, 1, Tyus Jones, Bilal Coulibaly, Deni Avdija, Kyle Kuzma, Marvin Bagley III 
+Pistons, Detroit, 14, 68, 3, Cade Cunningham, Jaden Ivey, Ausar Thompson, Simone Fontecchio, Jalen Duren
 Thunder,
 Nuggets,
 Timberwolves,
