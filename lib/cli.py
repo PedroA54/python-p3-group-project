@@ -1,5 +1,6 @@
 # lib/cli.py
 from helpers import (
+    welcome,
     menu,
     how_to_use,
     start,
@@ -8,22 +9,23 @@ from helpers import (
     exit_program,
 )
 
-EXIT_WORDS = ["4", "exit", "quit"]
+EXIT_WORDS = ["5", "exit", "quit"]
 
 
 def main():
+    welcome()
     while True:
         menu()
         choice = input("> ")
-        if choice == "0":
+        if choice == "1":
             how_to_use()
-        elif choice == "1":
-            start()
         elif choice == "2":
-            create_user()
+            start()
         elif choice == "3":
-            delete_user()
+            create_user()
         elif choice == "4":
+            delete_user()
+        elif choice == "5":
             exit_program()
         else:
             print("Invalid choice!")

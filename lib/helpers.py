@@ -1,9 +1,20 @@
 # lib/helpers.py
+# from models.user import User
+# from models.players import Players
+# from models.teams import Teams
+from seed import start_program
 from rich.console import Console
 from time import sleep
+import click
+
 
 console = Console()
-EXIT_WORDS = ["4", "exit", "quit"]
+EXIT_WORDS = ["5", "exit", "quit"]
+
+
+def welcome():
+    click.clear()
+    console.rule("[bold purple] NBA-Statistics :basketball:")
 
 
 def menu():
@@ -18,17 +29,17 @@ def menu():
         style="green",
     )
 
-    console.print("Please select an option:")
-    console.print("0. How To Use")
-    console.print("1. Get Started")
-    console.print("2. Create User")
-    console.print("3. Delete User")
-    console.print("4. Exit")
+    console.print("Please select an option: ", style="bold underline purple on white")
+    console.print("1. How To Use")
+    console.print("2. Get Started")
+    console.print("3. Create User")
+    console.print("4. Delete User")
+    console.print("5. Exit")
 
 
 def how_to_use():
     console.print("Welcome to NBA Stat Tracker!")
-    console.print("Here is how it works:")
+    console.print("Here is how it works: ", style="bold underline purple on white")
     console.print("1. Select 'Get Started'")
     console.print(
         """2. Choose what statistics you would like to see: Choose from a team's current seasonal recordor their starting roster"""
@@ -40,11 +51,28 @@ def how_to_use():
 
 
 def start():
-    console.print("Please select an option:")
-    console.print("0. Exit the program")
-    console.print("1. Track Teams")
-    console.print("2. Track Teams Starting Roster")
-    console.print("3. Delete User")
+    while True:
+
+        console.print(
+            "Please select an option: ", style="bold underline purple on white"
+        )
+        console.print("1. Track Teams")
+        console.print("2. Track Teams Starting Roster")
+        console.print("3. Delete User")
+        console.print("4. Exit the program")
+
+        user_input = input("> ").strip().lower()
+
+        if user_input in EXIT_WORDS:
+            exit_program()
+        elif user_input == "1":
+            team_stats()
+        elif user_input == "2":
+            team_roster()
+        elif user_input == "3":
+            delete_user()
+        elif user_input == "4":
+            exit_program()
 
 
 def create_user():
@@ -76,6 +104,14 @@ def delete_user():
     #     player.delete()
     # else:
     #     print(f"Could not find {name}.", style="subhead")
+    pass
+
+
+def team_stats():
+    pass
+
+
+def team_roster():
     pass
 
 
