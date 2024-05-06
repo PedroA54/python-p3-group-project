@@ -5,8 +5,19 @@ console = Console()
 EXIT_WORDS = ["4", "exit", "quit", "c"]
 
 
+def menu():
+    print("Please select an option:")
+    print("1. Create User")
+    print("2. Some useful function")
+    print("3. Some useful function")
+    print("4. Exit the program")
+
+
 def create_user():
-    print("Create User")
+    print("Creating a new user...")
+    name = input("Enter user's name: ")
+    email = input("Enter user's email: ")
+    print(f"User '{name}' with email '{email}' created successfully.")
 
 
 def helper_2():
