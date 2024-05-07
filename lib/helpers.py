@@ -1,11 +1,12 @@
 # lib/helpers.py
 # from models.user import User
 # from models.players import Players
-# from models.teams import Teams
+from models.teams import Team
 from seed import start_program
 from rich.console import Console
 from time import sleep
 import click
+import csv
 
 
 console = Console()
@@ -14,7 +15,7 @@ EXIT_WORDS = ["5", "exit", "quit"]
 
 def welcome():
     click.clear()
-    console.rule("[bold purple] NBA-Statistics :basketball:")
+    console.rule("[bold purple] NBA-STASTICS :basketball:")
 
 
 def menu():
@@ -42,7 +43,7 @@ def how_to_use():
     console.print("Here is how it works: ", style="bold underline purple on white")
     console.print("1. Select 'Get Started'")
     console.print(
-        """2. Choose what statistics you would like to see: Choose from a team's current seasonal recordor their starting roster"""
+        """2. Choose what statistics you would like to see: Choose from a team's current seasonal record their starting roster"""
     )
     console.print(
         "3. Search what team whose statistics you'd like to see by their name."
@@ -73,6 +74,73 @@ def start():
             delete_user()
         elif user_input == "4":
             exit_program()
+
+
+def team_stats():
+    while True:
+
+        console.print(
+            "Please select an option: ", style="bold underline purple on white"
+        )
+        console.print("1. All teams")
+        console.print("2.")
+        console.print("3. Exit the program")
+
+        user_input = input("> ").strip().lower()
+
+        if user_input in EXIT_WORDS:
+            exit_program()
+        elif user_input == "1":
+            all_teams()
+        elif user_input == "2":
+            pass
+        elif user_input == "3":
+            exit_program()
+
+
+def load_teams_from_csv(filename):
+    teams = []
+
+    with open(filename, "r", newline="") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            team = Team(
+                row["NbaTeam"],
+                row["City"],
+                int(row["Wins"]),
+                int(row["Losses"]),
+                int(row["Championchips"]),
+                row["PG"],
+                row["SG"],
+                row["SF"],
+                row["PF"],
+                row["C"],
+            )
+            teams.append(team)
+
+    return teams
+
+
+def all_teams():
+    teams = load_teams_from_csv("lib/data/team.csv")
+
+    console.print("All NBA Teams:\n")
+    for team in teams:
+        console.print(f"Team: {team.nba_team}")
+        console.print(f"City: {team.city}")
+        console.print(f"Wins: {team.wins}")
+        console.print(f"Losses: {team.losses}")
+        console.print(f"Championships: {team.championships}")
+        console.print(f"PG: {team.pg}")
+        console.print(f"SG: {team.sg}")
+        console.print(f"SF: {team.sf}")
+        console.print(f"PF: {team.pf}")
+        console.print(f"C: {team.c}")
+        console.print()
+
+
+def team_roster():
+    pass
 
 
 def create_user():
@@ -107,18 +175,6 @@ def delete_user():
     pass
 
 
-def team_stats():
-    pass
-
-
-def team_roster():
-    pass
-
-
 def exit_program():
     print("Goodbye!")
     exit()
-
-
-def play_game():
-    pass
