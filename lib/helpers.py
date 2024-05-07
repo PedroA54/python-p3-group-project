@@ -1,16 +1,13 @@
 # lib/helpers.py
-# from models.user import User
-# from models.players import Players
 from models.teams import Team
 from seed import start_program
 from rich.console import Console
-from time import sleep
 import click
 import csv
 
 
 console = Console()
-EXIT_WORDS = ["5", "exit", "quit"]
+EXIT_WORDS = ["exit", "quit"]
 
 
 def welcome():
@@ -59,7 +56,7 @@ def start():
         )
         console.print("1. Track Teams")
         console.print("2. Track Teams Starting Roster")
-        console.print("3. Delete User")
+        console.print("3. Function")
         console.print("4. Exit the program")
 
         user_input = input("> ").strip().lower()
@@ -71,20 +68,26 @@ def start():
         elif user_input == "2":
             team_roster()
         elif user_input == "3":
-            delete_user()
+            pass
         elif user_input == "4":
             exit_program()
+        else:
+            print("Invalid choice!")
 
 
 def team_stats():
+    teams = load_teams_from_csv("lib/data/team.csv")
+
     while True:
 
         console.print(
             "Please select an option: ", style="bold underline purple on white"
         )
         console.print("1. All teams")
-        console.print("2.")
-        console.print("3. Exit the program")
+        console.print("2. East")
+        console.print("3. West")
+        console.print("4. Search team by Name")
+        console.print("5. Exit the program")
 
         user_input = input("> ").strip().lower()
 
@@ -93,11 +96,18 @@ def team_stats():
         elif user_input == "1":
             all_teams()
         elif user_input == "2":
-            pass
+            east_team()
         elif user_input == "3":
+            west_team()
+        elif user_input == "4":
+            search_team(teams)  # grabs data from team.csv
+        elif user_input == "5":
             exit_program()
+        else:
+            print("Invalid choice!")
 
 
+# Gets Data from team.csv
 def load_teams_from_csv(filename):
     teams = []
 
@@ -121,6 +131,7 @@ def load_teams_from_csv(filename):
     return teams
 
 
+# Gets all teams
 def all_teams():
     teams = load_teams_from_csv("lib/data/team.csv")
 
@@ -137,6 +148,68 @@ def all_teams():
         console.print(f"PF: {team.pf}")
         console.print(f"C: {team.c}")
         console.print()
+
+
+# Gets teams only the East
+def east_team():
+    teams = load_teams_from_csv("lib/data/team.csv")
+
+    console.print("East NBA Teams:\n")
+    for team in teams[0:15]:
+        console.print(f"Team: {team.nba_team}")
+        console.print(f"City: {team.city}")
+        console.print(f"Wins: {team.wins}")
+        console.print(f"Losses: {team.losses}")
+        console.print(f"Championships: {team.championships}")
+        console.print(f"PG: {team.pg}")
+        console.print(f"SG: {team.sg}")
+        console.print(f"SF: {team.sf}")
+        console.print(f"PF: {team.pf}")
+        console.print(f"C: {team.c}")
+        console.print()
+
+
+# Gets team only on the west
+def west_team():
+    teams = load_teams_from_csv("lib/data/team.csv")
+
+    console.print("West NBA Teams:\n")
+    for team in teams[16:31]:
+        console.print(f"Team: {team.nba_team}")
+        console.print(f"City: {team.city}")
+        console.print(f"Wins: {team.wins}")
+        console.print(f"Losses: {team.losses}")
+        console.print(f"Championships: {team.championships}")
+        console.print(f"PG: {team.pg}")
+        console.print(f"SG: {team.sg}")
+        console.print(f"SF: {team.sf}")
+        console.print(f"PF: {team.pf}")
+        console.print(f"C: {team.c}")
+        console.print()
+
+
+# Searches Team by Name
+def search_team(teams):
+    team_name = input("Enter the name of the team: ").strip()
+    found_team = None
+    for team in teams:
+        if team.nba_team.lower() == team_name.lower():
+            found_team = team
+            break
+
+    if found_team:
+        console.print(f"Team: {found_team.nba_team}")
+        console.print(f"City: {found_team.city}")
+        console.print(f"Wins: {found_team.wins}")
+        console.print(f"Losses: {found_team.losses}")
+        console.print(f"Championships: {found_team.championships}")
+        console.print(f"PG: {found_team.pg}")
+        console.print(f"SG: {found_team.sg}")
+        console.print(f"SF: {found_team.sf}")
+        console.print(f"PF: {found_team.pf}")
+        console.print(f"C: {found_team.c}")
+    else:
+        console.print(f"No team found with the name '{team_name}'.")
 
 
 def team_roster():
