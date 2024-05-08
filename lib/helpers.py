@@ -119,7 +119,9 @@ def team_stats():
         console.print("2. East")
         console.print("3. West")
         console.print("4. Search team by Name")
-        console.print("5. Exit the program")
+        console.print("5. Add player to a team")
+        console.print("6. Remove player from a team")
+        console.print("7. Exit the program")
 
         user_input = input("> ").strip().lower()
 
@@ -134,11 +136,44 @@ def team_stats():
         elif user_input == "4":
             search_team(teams)
         elif user_input == "5":
+            add_player_to_team(teams)
+        elif user_input == "6":
+            remove_player_from_team(teams)
+        elif user_input == "7":
             exit_program()
         else:
             print("Invalid choice!")
 
         sys.stdin.flush()
+
+def add_player_to_team(teams):
+    team_name = input("Enter the name of the team: ").strip()
+    player_name = input("Enter the name of the player to add: ").strip()
+
+    for team in teams:
+        if team.nba_team.lower() == team_name.lower():
+            player = next((player for player in players if player.name.lower() == player_name.lower()), None)
+            if player:
+                team.add_player(player)
+                console.print(f"Player '{player_name}' added to team '{team_name}'.")
+            else:
+                console.print(f"No player found with the name '{player_name}'.")
+            return
+
+    console.print(f"No team found with the name '{team_name}'.")
+
+def remove_player_from_team(teams):
+    team_name = input("Enter the name of the team: ").strip()
+    player_name = input("Enter the name of the player to remove: ").strip()
+
+    for team in teams:
+        if team.nba_team.lower() == team_name.lower():
+            team.remove_player(player_name)
+            console.print(f"Player '{player_name}' removed from team '{team_name}'.")
+            return
+
+    console.print(f"No team found with the name '{team_name}'.")
+
 
 
 def all_teams(teams, page_number, teams_per_page):
