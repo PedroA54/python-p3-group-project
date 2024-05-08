@@ -1,5 +1,5 @@
 import os
-from models.__init__ import CONN, CURSOR
+from models import CONN, CURSOR  # Corrected import statement
 
 
 class Team:
@@ -40,8 +40,6 @@ class Team:
             raise TypeError("Position must be a string")
         self._nba_team = nba_team
 
-    # Define other properties and setters similarly
-
     @classmethod
     def create_table(cls):
         try:
@@ -64,7 +62,7 @@ class Team:
                     """
                 )
         except Exception as e:
-            return e
+            print("Error creating teams table:", e)  # Corrected error message
 
     @classmethod
     def drop_table(cls):
@@ -77,3 +75,33 @@ class Team:
                 )
         except Exception as e:
             print("Error dropping teams table:", e)
+
+    def save(self):
+        try:
+            with CONN:
+                CURSOR.execute(
+                    """
+                        INSERT INTO teams (nba_team, city, wins, losses, championships, pg, sg, sf, pf, c)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                    """,
+                    (
+                        self.nba_team,
+                        self._city,
+                        self._wins,
+                        self._losses,
+                        self._championships,
+                        self._pg,
+                        self._sg,
+                        self._sf,
+                        self._pf,
+                        self._c,
+                    ),
+                )
+                self.id = CURSOR.lastrowid
+                type(self).all[self.id] = self
+                return self
+        except Exception as e:
+            print("Error saving team:", e)
+
+
+Team.create_table()

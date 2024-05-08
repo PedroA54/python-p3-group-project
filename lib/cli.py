@@ -25,7 +25,7 @@ def main():
             create_user()
         elif choice == "4":
             delete_user()
-        elif choice == "4":
+        elif choice == "5":
             exit_program()
         else:
             print("Invalid choice!")

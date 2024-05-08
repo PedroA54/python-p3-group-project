@@ -196,15 +196,15 @@ def all_teams(teams, page_number, teams_per_page):
         print("==================")
         for team in teams[start_index:end_index]:
             console.print(f"Team: {team.nba_team}")
-            console.print(f"City: {team.city}")
-            console.print(f"Wins: {team.wins}")
-            console.print(f"Losses: {team.losses}")
-            console.print(f"Championships: {team.championships}")
-            console.print(f"PG: {team.pg}")
-            console.print(f"SG: {team.sg}")
-            console.print(f"SF: {team.sf}")
-            console.print(f"PF: {team.pf}")
-            console.print(f"C: {team.c}")
+            console.print(f"City: {team._city}")  # Accessing the city attribute
+            console.print(f"Wins: {team._wins}")
+            console.print(f"Losses: {team._losses}")
+            console.print(f"Championships: {team._championships}")
+            console.print(f"PG: {team._pg}")
+            console.print(f"SG: {team._sg}")
+            console.print(f"SF: {team._sf}")
+            console.print(f"PF: {team._pf}")
+            console.print(f"C: {team._c}")
             console.print()
 
         choice = input(

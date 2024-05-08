@@ -77,7 +77,7 @@ class Players:
             raise TypeError("Rebounds must be a number")
         self._rebounds = rebounds
 
-        # Class and Association Methods go here
+    # Class and Association Methods go here
 
     @classmethod
     def create_table(cls):
@@ -110,3 +110,26 @@ class Players:
                 )
         except Exception as e:
             print("Error dropping players table:", e)
+
+    def save(self):
+        try:
+            with CONN:
+                CURSOR.execute(
+                    """
+                        INSERT INTO players (name, team, position, points, assists, rebounds)
+                        VALUES (?, ?, ?, ?, ?, ?);
+                    """,
+                    (
+                        self.name,
+                        self.team,
+                        self.position,
+                        self.points,
+                        self.assists,
+                        self.rebounds,
+                    ),
+                )
+                self.id = CURSOR.lastrowid
+                type(self).all[self.id] = self
+                return self
+        except Exception as e:
+            print("Error saving player:", e)
