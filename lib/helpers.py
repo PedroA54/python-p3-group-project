@@ -48,7 +48,7 @@ def start():
             "Please select an option: ", style="bold underline purple on white"
         )
         console.print("1. Track Teams")
-        console.print("2. Track Teams Starting Roster")
+        console.print("2. Player Search")
         console.print("3. Create user")
         console.print("4. Exit the program")
 
@@ -201,9 +201,9 @@ def load_players_from_csv(filename):
                 row["Name"],
                 row["Team"],
                 row["Position"],
-                int(row["Points"]),
-                int(row["Assists"]),
-                int(row["Rebounds"]),
+                float(row["Points"]),
+                float(row["Assists"]),
+                float(row["Rebounds"]),
             )
             players.append(player)
 
@@ -256,7 +256,7 @@ def search_team(teams):
 def team_roster():
     search_name = input("Enter player name to search: ").strip()
 
-    players = load_players_from_csv("lib/data/player.csv")
+    players = load_players_from_csv("lib/data/players.csv")
 
     found_players = [
         player for player in players if player.name.lower() == search_name.lower()
