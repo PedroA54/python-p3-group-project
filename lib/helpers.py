@@ -1,9 +1,11 @@
 # lib/helpers.py
 from models.teams import Team
+from models.user import User
 from seed import start_program
 from rich.console import Console
 import click
 import csv
+import sys
 
 
 console = Console()
@@ -15,39 +17,27 @@ def welcome():
     console.rule("[bold purple] NBA-STASTICS :basketball:")
 
 
+# mainMenu
 def menu():
     console.print(
         """
-    _   ______  ___       __________  ___   ________ __ __________ 
-   / | / / __ )/   |     /_  __/ __ \/   | / ____/ //_// ____/ __ \
-  /  |/ / __  / /| |      / / / /_/ / /| |/ /   / ,<  / __/ / /_/ /
- / /|  / /_/ / ___ |     / / / _, _/ ___ / /___/ /| |/ /___/ _, _/ 
-/_/ |_/_____/_/  |_|    /_/ /_/ |_/_/  |_\____/_/ |_/_____/_/ |_|  
-                                                                   """,
+     _   ______  ___       __________  ___   ________ __ __________ 
+    / | / / __ )/   |     /_  __/ __ \/   | / ____/ //_// ____/ __ \
+   /  |/ / __  / /| |      / / / /_/ / /| |/ /   / ,<  / __/ / /_/ /
+  / /|  / /_/ / ___ |     / / / _, _/ ___ / /___/ /| |/ /___/ _, _/ 
+ /_/ |_/_____/_/  |_|    /_/ /_/ |_/_/  |_\____/_/ |_/_____/_/ |_|  
+                                                                         """,
         style="green",
     )
 
     console.print("Please select an option: ", style="bold underline purple on white")
     console.print("1. How To Use")
     console.print("2. Get Started")
-    console.print("3. Create User")
-    console.print("4. Delete User")
-    console.print("5. Exit")
+    console.print("3. Create username")
+    console.print("4. Exit")
 
 
-def how_to_use():
-    console.print("Welcome to NBA Stat Tracker!")
-    console.print("Here is how it works: ", style="bold underline purple on white")
-    console.print("1. Select 'Get Started'")
-    console.print(
-        """2. Choose what statistics you would like to see: Choose from a team's current seasonal record their starting roster"""
-    )
-    console.print(
-        "3. Search what team whose statistics you'd like to see by their name."
-    )
-    console.print("4. Have Fun!")
-
-
+# subMenu1
 def start():
     while True:
 
@@ -56,7 +46,7 @@ def start():
         )
         console.print("1. Track Teams")
         console.print("2. Track Teams Starting Roster")
-        console.print("3. Function")
+        console.print("3. Manage users")
         console.print("4. Exit the program")
 
         user_input = input("> ").strip().lower()
@@ -75,36 +65,17 @@ def start():
             print("Invalid choice!")
 
 
-def team_stats():
-    teams = load_teams_from_csv("lib/data/team.csv")
-
-    while True:
-
-        console.print(
-            "Please select an option: ", style="bold underline purple on white"
-        )
-        console.print("1. All teams")
-        console.print("2. East")
-        console.print("3. West")
-        console.print("4. Search team by Name")
-        console.print("5. Exit the program")
-
-        user_input = input("> ").strip().lower()
-
-        if user_input in EXIT_WORDS:
-            exit_program()
-        elif user_input == "1":
-            all_teams()
-        elif user_input == "2":
-            east_team()
-        elif user_input == "3":
-            west_team()
-        elif user_input == "4":
-            search_team(teams)  # grabs data from team.csv
-        elif user_input == "5":
-            exit_program()
-        else:
-            print("Invalid choice!")
+def how_to_use():
+    console.print("Welcome to NBA Stat Tracker!")
+    console.print("Here is how it works: ", style="bold underline purple on white")
+    console.print("1. Select 'Get Started'")
+    console.print(
+        """2. Choose what statistics you would like to see: Choose from a team's current seasonal record their starting roster"""
+    )
+    console.print(
+        "3. Search what team whose statistics you'd like to see by their name."
+    )
+    console.print("4. Have Fun!")
 
 
 # Gets Data from team.csv
@@ -131,23 +102,77 @@ def load_teams_from_csv(filename):
     return teams
 
 
-# Gets all teams
-def all_teams():
-    teams = load_teams_from_csv("lib/data/team.csv")
+import sys
 
-    console.print("All NBA Teams:\n")
-    for team in teams:
-        console.print(f"Team: {team.nba_team}")
-        console.print(f"City: {team.city}")
-        console.print(f"Wins: {team.wins}")
-        console.print(f"Losses: {team.losses}")
-        console.print(f"Championships: {team.championships}")
-        console.print(f"PG: {team.pg}")
-        console.print(f"SG: {team.sg}")
-        console.print(f"SF: {team.sf}")
-        console.print(f"PF: {team.pf}")
-        console.print(f"C: {team.c}")
-        console.print()
+
+import sys
+
+
+def team_stats():
+    teams = load_teams_from_csv("lib/data/team.csv")
+    total_teams = len(teams)
+    current_page = 1
+    teams_per_page = 5
+
+    while True:
+        console.print(
+            "Please select an option: ", style="bold underline purple on white"
+        )
+        console.print("1. All teams")
+        console.print("2. East")
+        console.print("3. West")
+        console.print("4. Search team by Name")
+        console.print("5. Exit the program")
+
+        user_input = input("> ").strip().lower()
+
+        if user_input in EXIT_WORDS:
+            exit_program()
+        elif user_input == "1":
+            current_page = all_teams(teams, current_page, teams_per_page)
+        elif user_input == "2":
+            east_team()
+        elif user_input == "3":
+            west_team()
+        elif user_input == "4":
+            search_team(teams)
+        elif user_input == "5":
+            exit_program()
+        else:
+            print("Invalid choice!")
+
+        sys.stdin.flush()
+
+
+def all_teams(teams, page_number, teams_per_page):
+    while True:
+        start_index = (page_number - 1) * teams_per_page
+        end_index = min(start_index + teams_per_page, len(teams))
+        console.print("[bold #FF7EF5]All NBA Teams[/bold #FF7EF5]")
+        console.print(f" Page {page_number}\n")
+        print("==================")
+        for team in teams[start_index:end_index]:
+            console.print(f"Team: {team.nba_team}")
+            console.print(f"City: {team.city}")
+            console.print(f"Wins: {team.wins}")
+            console.print(f"Losses: {team.losses}")
+            console.print(f"Championships: {team.championships}")
+            console.print(f"PG: {team.pg}")
+            console.print(f"SG: {team.sg}")
+            console.print(f"SF: {team.sf}")
+            console.print(f"PF: {team.pf}")
+            console.print(f"C: {team.c}")
+            console.print()
+
+        choice = input(
+            "\nEnter your choice (p: Previous Page, n: Next Page, x: Back to Menu): "
+        )
+        if choice.lower() == "p" and page_number > 1:
+            page_number -= 1
+        elif choice.lower() == "n" and (start_index + teams_per_page) < len(teams):
+            page_number += 1
+        elif choice.lower() == "x":
+            break
 
 
 # Gets teams only the East
@@ -216,35 +241,31 @@ def team_roster():
     pass
 
 
-def create_user():
-    # name = input("Enter your name: ").strip()
+def find_or_create_username():
+    while True:  # Loop until a valid username is provided or the user chooses to exit
+        user_name = input("Enter your username: ").strip()
 
-    # if name.lower() in EXIT_WORDS:
-    #     exit_program()
+        if user_name.lower() in EXIT_WORDS:
+            exit_program()
 
-    # player = User.find_by_name(name)
+        user = User.find_by_name(user_name)
 
-    # if player is None:
-    #     new_player = User.create(name)
-    #     print(f"Welcome, {new_player.name}!", style="subhead")
-    #     play_game(new_player)
-    # else:
-    #     print(f"Welcome back, {player.name}!", style="subhead")
-    #     play_game(player)
+        if user is None:
+            try:
+                user = User(user_name)
+                user.save()
+                print(f"Hi, {user_name}!")
+                return user  # Exit the loop and return the user object
+            except (TypeError, ValueError) as e:
+                print(e)
+        else:
+            print(f"Welcome back, {user_name}!")
+            return user  # Exit the loop and return the existing user object
     pass
 
 
 def delete_user():
-    # name = input("Enter your name: ").strip()
 
-    # if name.lower() in EXIT_WORDS:
-    #     exit_program()
-
-    # player = User.find_by_name(name)
-    # if player:
-    #     player.delete()
-    # else:
-    #     print(f"Could not find {name}.", style="subhead")
     pass
 
 

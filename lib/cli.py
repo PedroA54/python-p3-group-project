@@ -4,12 +4,11 @@ from helpers import (
     menu,
     how_to_use,
     start,
-    create_user,
-    delete_user,
     exit_program,
+    find_or_create_username,
 )
 
-EXIT_WORDS = ["5", "exit", "quit"]
+EXIT_WORDS = ["4", "exit", "quit"]
 
 
 def main():
@@ -22,10 +21,8 @@ def main():
         elif choice == "2":
             start()
         elif choice == "3":
-            create_user()
+            user = find_or_create_username()
         elif choice == "4":
-            delete_user()
-        elif choice == "5":
             exit_program()
         else:
             print("Invalid choice!")
