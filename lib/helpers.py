@@ -1,4 +1,6 @@
 # lib/helpers.py
+# from models.user import User
+from models.players import Players
 from models.teams import Team
 from models.user import User
 from seed import start_program
@@ -193,6 +195,24 @@ def east_team():
         console.print(f"C: {team.c}")
         console.print()
 
+def load_players_from_csv(filename):
+    players = []
+
+    with open(filename, "r", newline="") as file:
+         reader = csv.DictReader(file)
+         for row in reader:
+            player = Players(
+                row["Name"],
+                row["Team"],
+                row["Position"],
+                int(row["Points"]),
+                int(row["Assists"]),
+                int(row["Rebounds"]),
+            )
+            players.append(player)
+
+    return players
+
 
 # Gets team only on the west
 def west_team():
@@ -238,7 +258,27 @@ def search_team(teams):
 
 
 def team_roster():
-    pass
+    search_name = input("Enter player name to search: ").strip()
+
+    players = load_players_from_csv("lib/data/player.csv")
+
+    found_players = [player for player in players if player.name.lower() == search_name.lower()]
+
+    if not found_players:
+        console.print(f"No player found with the name '{search_name}'")
+        return
+
+    console.print(f"Players found with the name '{search_name}':\n")
+
+    for player in found_players:
+        console.print(f"Name: {player.name}")
+        console.print(f"Team: {player.team}")
+        console.print(f"Position: {player.position}")
+        console.print(f"Points: {player.points}")
+        console.print(f"Assists: {player.assists}")
+        console.print(f"Rebounds: {player.rebounds}")
+        console.print()
+
 
 
 def find_or_create_username():
