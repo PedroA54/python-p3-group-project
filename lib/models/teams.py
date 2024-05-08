@@ -13,6 +13,17 @@ class Team:
         self._sf = sf
         self._pf = pf
         self._c = c
+        self._players = []
+
+    @property
+    def players(self):
+        return self._players
+
+    def add_player(self, player):
+        self._players.append(player)
+
+    def remove_player(self, player_name):
+        self._players = [player for player in self._players if player.name.lower() != player_name.lower()]
 
     @property
     def nba_team(self):
