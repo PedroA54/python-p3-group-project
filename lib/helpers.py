@@ -151,9 +151,10 @@ def add_player_to_team(teams):
     players = load_players_from_csv("lib/data/players.csv")
     player_name = input("Enter player name to add to team: ").strip()
 
-
-    player = next((player for player in players if player.name.lower() == player_name.lower()), None)
-
+    player = next(
+        (player for player in players if player.name.lower() == player_name.lower()),
+        None,
+    )
 
     if player is None:
         console.print(f"No player found with the name '{player_name}'")
@@ -161,7 +162,9 @@ def add_player_to_team(teams):
 
     # Assuming you have a team object already
     team_name = input("Enter team name to add player to: ").strip()
-    team = next((team for team in teams if team.nba_team.lower() == team_name.lower()), None)
+    team = next(
+        (team for team in teams if team.nba_team.lower() == team_name.lower()), None
+    )
 
     if team is None:
         console.print(f"No team found with the name '{team_name}'")

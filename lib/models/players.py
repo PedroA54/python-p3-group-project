@@ -1,3 +1,7 @@
+import os
+from models.__init__ import CONN, CURSOR
+
+
 class Players:
     all = {}
 
@@ -74,3 +78,35 @@ class Players:
         self._rebounds = rebounds
 
         # Class and Association Methods go here
+
+    @classmethod
+    def create_table(cls):
+        try:
+            with CONN:
+                CURSOR.execute(
+                    """
+                        CREATE TABLE IF NOT EXISTS players (
+                            id INTEGER PRIMARY KEY,
+                            name TEXT NOT NULL,
+                            team TEXT NOT NULL,
+                            position TEXT NOT NULL,
+                            points REAL,
+                            assists REAL,
+                            rebounds REAL
+                        );
+                    """
+                )
+        except Exception as e:
+            return e
+
+    @classmethod
+    def drop_table(cls):
+        try:
+            with CONN:
+                CURSOR.execute(
+                    """
+                        DROP TABLE IF EXISTS players;
+                    """
+                )
+        except Exception as e:
+            print("Error dropping players table:", e)
