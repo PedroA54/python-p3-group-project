@@ -242,25 +242,6 @@ def team_roster():
 
 
 def find_or_create_username():
-    while True:  # Loop until a valid username is provided or the user chooses to exit
-        user_name = input("Enter your username: ").strip()
-
-        if user_name.lower() in EXIT_WORDS:
-            exit_program()
-
-        user = User.find_by_name(user_name)
-
-        if user is None:
-            try:
-                user = User(user_name)
-                user.save()
-                print(f"Hi, {user_name}!")
-                return user  # Exit the loop and return the user object
-            except (TypeError, ValueError) as e:
-                print(e)
-        else:
-            print(f"Welcome back, {user_name}!")
-            return user  # Exit the loop and return the existing user object
     pass
 
 
