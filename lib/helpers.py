@@ -148,27 +148,27 @@ def team_stats():
 
 
 def add_player_to_team(teams):
-    team_name = input("Enter the name of the team: ").strip()
-    player_name = input("Enter the name of the player to add: ").strip()
+    players = load_players_from_csv("lib/data/players.csv")
+    player_name = input("Enter player name to add to team: ").strip()
 
-    for team in teams:
-        if team.nba_team.lower() == team_name.lower():
-            player = next(
-                (
-                    player
-                    for player in player
-                    if player.name.lower() == player_name.lower()
-                ),
-                None,
-            )
-            if player:
-                team.add_player(player)
-                console.print(f"Player '{player_name}' added to team '{team_name}'.")
-            else:
-                console.print(f"No player found with the name '{player_name}'.")
-            return
 
-    console.print(f"No team found with the name '{team_name}'.")
+    player = next((player for player in players if player.name.lower() == player_name.lower()), None)
+
+
+    if player is None:
+        console.print(f"No player found with the name '{player_name}'")
+        return
+
+    # Assuming you have a team object already
+    team_name = input("Enter team name to add player to: ").strip()
+    team = next((team for team in teams if team.nba_team.lower() == team_name.lower()), None)
+
+    if team is None:
+        console.print(f"No team found with the name '{team_name}'")
+        return
+
+    team.add_player(player)
+    console.print(f"Added player {player_name} to team {team_name}")
 
 
 def remove_player_from_team(teams):
