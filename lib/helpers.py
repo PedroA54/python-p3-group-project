@@ -17,10 +17,6 @@ EXIT_WORDS = ["exit", "quit"]
 def welcome():
     click.clear()
     console.rule("[bold purple] NBA-STASTICS :basketball:")
-
-
-# mainMenu
-def menu():
     console.print(
         """
      _   ______  ___       __________  ___   ________ __ __________ 
@@ -31,6 +27,10 @@ def menu():
                                                                          """,
         style="green",
     )
+
+
+# mainMenu
+def menu():
 
     console.print("Please select an option: ", style="bold underline purple on white")
     console.print("1. How To Use")
@@ -49,7 +49,7 @@ def start():
         )
         console.print("1. Track Teams")
         console.print("2. Player Search")
-        console.print("3. Create user")
+        console.print("3. Manage user")
         console.print("4. Exit the program")
 
         user_input = input("> ").strip().lower()
@@ -146,11 +146,14 @@ def team_stats():
 
         sys.stdin.flush()
 
+
 def add_player_to_team(teams):
     players = load_players_from_csv("lib/data/players.csv")
     player_name = input("Enter player name to add to team: ").strip()
 
+
     player = next((player for player in players if player.name.lower() == player_name.lower()), None)
+
 
     if player is None:
         console.print(f"No player found with the name '{player_name}'")
@@ -167,6 +170,7 @@ def add_player_to_team(teams):
     team.add_player(player)
     console.print(f"Added player {player_name} to team {team_name}")
 
+
 def remove_player_from_team(teams):
     team_name = input("Enter the name of the team: ").strip()
     player_name = input("Enter the name of the player to remove: ").strip()
@@ -178,7 +182,6 @@ def remove_player_from_team(teams):
             return
 
     console.print(f"No team found with the name '{team_name}'.")
-
 
 
 def all_teams(teams, page_number, teams_per_page):
@@ -329,10 +332,10 @@ def create_user():
     if player is None:
         new_player = User.create(name)
         print(f"Welcome, {new_player.name}!", style="subhead")
-        play_game(new_player)
+        start(new_player)
     else:
         print(f"Welcome back, {player.name}!", style="subhead")
-        play_game(player)
+        start(player)
 
 
 def delete_user():
