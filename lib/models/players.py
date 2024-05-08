@@ -1,4 +1,3 @@
-
 class Players:
     all = {}
 
@@ -13,11 +12,11 @@ class Players:
 
     def __repr__(self):
         return f"<Player Name: {self.name}, Team: {self.team}, Position: {self.position}, Points: {self.points}, Assists: {self.assists}, Rebounds: {self.rebounds}>"
-    
+
     @property
     def name(self):
         return self._name
-    
+
     @name.setter
     def name(self, name):
         if not isinstance(name, str):
