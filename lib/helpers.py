@@ -1,6 +1,7 @@
 # lib/helpers.py
 
 EXIT_WORDS = ["0", "exit", "quit"]
+
 def welcome():
     print("""
     _   ______  ___       __________  ___   ________ __ __________ 
