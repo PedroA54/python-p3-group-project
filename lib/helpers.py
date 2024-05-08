@@ -104,12 +104,6 @@ def load_teams_from_csv(filename):
     return teams
 
 
-import sys
-
-
-import sys
-
-
 def team_stats():
     teams = load_teams_from_csv("lib/data/team.csv")
     total_teams = len(teams)
@@ -195,12 +189,13 @@ def east_team():
         console.print(f"C: {team.c}")
         console.print()
 
+
 def load_players_from_csv(filename):
     players = []
 
     with open(filename, "r", newline="") as file:
-         reader = csv.DictReader(file)
-         for row in reader:
+        reader = csv.DictReader(file)
+        for row in reader:
             player = Players(
                 row["Name"],
                 row["Team"],
@@ -262,7 +257,9 @@ def team_roster():
 
     players = load_players_from_csv("lib/data/player.csv")
 
-    found_players = [player for player in players if player.name.lower() == search_name.lower()]
+    found_players = [
+        player for player in players if player.name.lower() == search_name.lower()
+    ]
 
     if not found_players:
         console.print(f"No player found with the name '{search_name}'")
@@ -278,35 +275,6 @@ def team_roster():
         console.print(f"Assists: {player.assists}")
         console.print(f"Rebounds: {player.rebounds}")
         console.print()
-
-
-
-def find_or_create_username():
-    while True:  # Loop until a valid username is provided or the user chooses to exit
-        user_name = input("Enter your username: ").strip()
-
-        if user_name.lower() in EXIT_WORDS:
-            exit_program()
-
-        user = User.find_by_name(user_name)
-
-        if user is None:
-            try:
-                user = User(user_name)
-                user.save()
-                print(f"Hi, {user_name}!")
-                return user  # Exit the loop and return the user object
-            except (TypeError, ValueError) as e:
-                print(e)
-        else:
-            print(f"Welcome back, {user_name}!")
-            return user  # Exit the loop and return the existing user object
-    pass
-
-
-def delete_user():
-
-    pass
 
 
 def exit_program():
