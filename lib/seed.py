@@ -1,6 +1,3 @@
-import ipdb
-
-
 def start_program():
     print("Successfully seeded")
 
