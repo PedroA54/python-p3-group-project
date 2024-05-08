@@ -5,7 +5,8 @@ from helpers import (
     how_to_use,
     start,
     exit_program,
-    find_or_create_username,
+    create_user,
+    delete_user,
 )
 
 EXIT_WORDS = ["4", "exit", "quit"]
@@ -21,7 +22,9 @@ def main():
         elif choice == "2":
             start()
         elif choice == "3":
-            user = find_or_create_username()
+            create_user()
+        elif choice == "4":
+            delete_user()
         elif choice == "4":
             exit_program()
         else:

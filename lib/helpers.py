@@ -35,8 +35,9 @@ def menu():
     console.print("Please select an option: ", style="bold underline purple on white")
     console.print("1. How To Use")
     console.print("2. Get Started")
-    console.print("3. Create username")
-    console.print("4. Exit")
+    console.print("3. Create user")
+    console.print("4. Delete user")
+    console.print("5. Exit")
 
 
 # subMenu1
@@ -48,7 +49,7 @@ def start():
         )
         console.print("1. Track Teams")
         console.print("2. Track Teams Starting Roster")
-        console.print("3. Manage users")
+        console.print("3. Create user")
         console.print("4. Exit the program")
 
         user_input = input("> ").strip().lower()
@@ -275,6 +276,36 @@ def team_roster():
         console.print(f"Assists: {player.assists}")
         console.print(f"Rebounds: {player.rebounds}")
         console.print()
+
+
+def create_user():
+    name = input("Enter your name: ").strip()
+
+    if name.lower() in EXIT_WORDS:
+        exit_program()
+
+    player = User.find_by_name(name)
+
+    if player is None:
+        new_player = User.create(name)
+        print(f"Welcome, {new_player.name}!", style="subhead")
+        play_game(new_player)
+    else:
+        print(f"Welcome back, {player.name}!", style="subhead")
+        play_game(player)
+
+
+def delete_user():
+    name = input("Enter your name: ").strip()
+
+    if name.lower() in EXIT_WORDS:
+        exit_program()
+
+    player = User.find_by_name(name)
+    if player:
+        player.delete()
+    else:
+        print(f"Could not find {name}.", style="subhead")
 
 
 def exit_program():
