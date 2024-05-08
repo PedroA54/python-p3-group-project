@@ -1,4 +1,6 @@
 # lib/cli.py
+from models.players import Player
+
 from helpers import (
     welcome,
     menu,
