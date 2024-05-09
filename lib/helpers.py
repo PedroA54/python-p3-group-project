@@ -140,16 +140,16 @@ def all_teams(teams, page_number, teams_per_page):
         console.print(f" Page {page_number}\n")
         print("==================")
         for team in teams[start_index:end_index]:
-            console.print(f"Team: {team.nba_team}")
-            console.print(f"City: {team._city}")  # Accessing the city attribute
-            console.print(f"Wins: {team._wins}")
-            console.print(f"Losses: {team._losses}")
-            console.print(f"Championships: {team._championships}")
-            console.print(f"PG: {team._pg}")
-            console.print(f"SG: {team._sg}")
-            console.print(f"SF: {team._sf}")
-            console.print(f"PF: {team._pf}")
-            console.print(f"C: {team._c}")
+            console.print(f"Team: {team.team}")
+            console.print(f"City: {team.city}")  # Accessing the city attribute
+            console.print(f"Wins: {team.wins}")
+            console.print(f"Losses: {team.losses}")
+            console.print(f"Championships: {team.championships}")
+            console.print(f"PG: {team.pg}")
+            console.print(f"SG: {team.sg}")
+            console.print(f"SF: {team.sf}")
+            console.print(f"PF: {team.pf}")
+            console.print(f"C: {team.c}")
             console.print()
 
         choice = input(
@@ -167,7 +167,7 @@ def east_team():
     teams = load_teams_from_db()
     console.print("East NBA Teams:\n")
     for team in teams[0:15]:
-        console.print(f"Team: {team.nba_team}")
+        console.print(f"Team: {team.team}")
         console.print(f"City: {team.city}")
         console.print(f"Wins: {team.wins}")
         console.print(f"Losses: {team.losses}")
@@ -184,7 +184,7 @@ def west_team():
     teams = load_teams_from_db()
     console.print("West NBA Teams:\n")
     for team in teams[16:31]:
-        console.print(f"Team: {team.nba_team}")
+        console.print(f"Team: {team.team}")
         console.print(f"City: {team.city}")
         console.print(f"Wins: {team.wins}")
         console.print(f"Losses: {team.losses}")
@@ -205,7 +205,7 @@ def search_team(teams):
             found_team = team
             break
     if found_team:
-        console.print(f"Team: {found_team.nba_team}")
+        console.print(f"Team: {found_team.team}")
         console.print(f"City: {found_team.city}")
         console.print(f"Wins: {found_team.wins}")
         console.print(f"Losses: {found_team.losses}")
