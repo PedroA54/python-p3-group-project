@@ -234,7 +234,7 @@ def add_player_to_team(teams):
 
     team_name = input("Enter team name to add player to: ").strip()
     team = next(
-        (team for team in teams if team.nba_team.lower() == team_name.lower()), None
+        (team for team in teams if team.team.lower() == team_name.lower()), None
     )
 
     if team is None:
