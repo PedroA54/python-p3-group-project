@@ -1,5 +1,4 @@
 # lib/helpers.py
-# from models.user import User
 from models.players import Players
 from models.teams import Team
 from models.user import User
