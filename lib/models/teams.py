@@ -1,4 +1,5 @@
 from models import CONN, CURSOR  # Corrected import statement
+from sqlite3 import IntegrityError
 import os
 
 
@@ -6,7 +7,18 @@ class Team:
     all = {}
 
     def __init__(
-        self, team, city, wins, losses, championships, pg, sg, sf, pf, c, id=None
+        self,
+        id,
+        team,
+        city,
+        wins,
+        losses,
+        championships,
+        pg,
+        sg,
+        sf,
+        pf,
+        c,
     ):
         self.id = id
         self.team = team
@@ -96,6 +108,7 @@ class Team:
                         WHERE id=?
                     """,
                     (
+                        self.id,
                         self.team,
                         self.city,
                         self.wins,
@@ -106,7 +119,6 @@ class Team:
                         self.sf,
                         self.pf,
                         self.c,
-                        self.id,
                     ),
                 )
         except Exception as e:
