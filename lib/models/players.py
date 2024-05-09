@@ -1,5 +1,6 @@
 import os
 from models.__init__ import CONN, CURSOR
+from sqlite3 import IntegrityError
 
 
 class Players:

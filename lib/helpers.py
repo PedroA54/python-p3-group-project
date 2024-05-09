@@ -107,7 +107,7 @@ def team_stats():
         console.print("1. All teams")
         console.print("2. East")
         console.print("3. West")
-        console.print("4. Search team by Name")
+        console.print("4. Search team by City")
         console.print("5. Add player to a team")
         console.print("6. Remove player from a team")
         console.print("7. Exit the program")
@@ -140,6 +140,7 @@ def all_teams(teams, page_number, teams_per_page):
         console.print(f" Page {page_number}\n")
         print("==================")
         for team in teams[start_index:end_index]:
+            console.print(f"id: {team.id}")
             console.print(f"Team: {team.team}")
             console.print(f"City: {team.city}")  # Accessing the city attribute
             console.print(f"Wins: {team.wins}")
@@ -198,13 +199,14 @@ def west_team():
 
 
 def search_team(teams):
-    team_name = input("Enter the name of the team: ").strip()
+    team_name = input("Enter the name of the City: ").strip()
     found_team = None
     for team in teams:
         if team.city.lower() == team_name.lower():
             found_team = team
             break
     if found_team:
+        console.print(f"id: {team.id}")
         console.print(f"Team: {found_team.team}")
         console.print(f"City: {found_team.city}")
         console.print(f"Wins: {found_team.wins}")
@@ -316,10 +318,10 @@ def create_user():
 
     if player is None:
         new_player = User.create(name)
-        print(f"Welcome, {new_player.name}!", style="subhead")
+        print(f"Welcome, {new_player.name}!")
         start(new_player)
     else:
-        print(f"Welcome back, {player.name}!", style="subhead")
+        print(f"Welcome back, {player.name}!")
         start(player)
 
 
