@@ -1,6 +1,5 @@
 # lib/helpers.py
-# from models.user import User
-from models.players import Player
+from models.players import Players
 from models.teams import Team
 from models.user import User
 from seed import start_program
@@ -180,7 +179,7 @@ def remove_player_from_team(teams):
 
     for team in teams:
         if team.nba_team.lower() == team_name.lower():
-            team.remove_player(player_name) 
+            team.remove_player(player_name)
             console.print(f"Player '{player_name}' removed from team '{team_name}'.")
             return
 
