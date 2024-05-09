@@ -242,7 +242,7 @@ def load_players_from_csv(filename):
     with open(filename, "r", newline="") as file:
         reader = csv.DictReader(file)
         for row in reader:
-            player = Player(
+            player = Players(
                 row["Name"],
                 row["Team"],
                 row["Position"],
