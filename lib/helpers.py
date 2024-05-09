@@ -17,20 +17,20 @@ EXIT_WORDS = ["exit", "quit"]
 def welcome():
     click.clear()
     console.rule("[bold purple] NBA-STASTICS :basketball:")
+    console.print(
+    """
+      _   ______  ___       __________  ___   ________ __ __________ 
+     / | / / __ )/   |     /_  __/ __ \/   | / ____/ //_// ____/ __ \
+    /  |/ / __  / /| |      / / / /_/ / /| |/ /   / ,<  / __/ / /_/ /
+   / /|  / /_/ / ___ |     / / / _, _/ ___ / /___/ /| |/ /___/ _, _/ 
+  /_/ |_/_____/_/  |_|    /_/ /_/ |_/_/  |_\____/_/ |_/_____/_/ |_|  
+
+                                                                        
+     """,style="green")
 
 
 # mainMenu
 def menu():
-    console.print(
-        """
-     _   ______  ___       __________  ___   ________ __ __________ 
-    / | / / __ )/   |     /_  __/ __ \/   | / ____/ //_// ____/ __ \
-   /  |/ / __  / /| |      / / / /_/ / /| |/ /   / ,<  / __/ / /_/ /
-  / /|  / /_/ / ___ |     / / / _, _/ ___ / /___/ /| |/ /___/ _, _/ 
- /_/ |_/_____/_/  |_|    /_/ /_/ |_/_/  |_\____/_/ |_/_____/_/ |_|  
-                                                                         """,
-        style="green",
-    )
 
     console.print("Please select an option: ", style="bold underline purple on white")
     console.print("1. How To Use")
@@ -289,10 +289,10 @@ def create_user():
     if player is None:
         new_player = User.create(name)
         print(f"Welcome, {new_player.name}!", style="subhead")
-        play_game(new_player)
+        start(new_player)
     else:
         print(f"Welcome back, {player.name}!", style="subhead")
-        play_game(player)
+        start(player)
 
 
 def delete_user():
@@ -301,8 +301,7 @@ def delete_user():
     if name.lower() in EXIT_WORDS:
         exit_program()
 
-    player = User.find_by_name(name)
-    if player:
+    if player := User.find_by_name(name):
         player.delete()
     else:
         print(f"Could not find {name}.", style="subhead")

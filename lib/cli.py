@@ -13,7 +13,6 @@ EXIT_WORDS = ["4", "exit", "quit"]
 
 
 def main():
-    welcome()
     while True:
         menu()
         choice = input("> ")
@@ -25,11 +24,12 @@ def main():
             create_user()
         elif choice == "4":
             delete_user()
-        elif choice == "4":
+        elif choice == "5":
             exit_program()
         else:
             print("Invalid choice!")
 
 
 if __name__ == "__main__":
+    welcome()
     main()
