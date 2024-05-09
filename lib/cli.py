@@ -1,5 +1,5 @@
 # lib/cli.py
-from models.players import Player
+from models.players import Players
 
 from helpers import (
     welcome,
