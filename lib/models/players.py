@@ -6,9 +6,9 @@ from sqlite3 import IntegrityError
 class Players:
     all = {}
 
-    def __init__(self, name, team, position, points, assists, rebounds, id=None):
+    def __init__(self, name, team_id, position, points, assists, rebounds, id):
         self.name = name
-        self.team = team
+        self.team_id = team_id
         self.position = position
         self.points = points
         self.assists = assists
@@ -16,7 +16,12 @@ class Players:
         self.id = id
 
     def __repr__(self):
-        return f"<Player Name: {self.name}, Team: {self.team}, Position: {self.position}, Points: {self.points}, Assists: {self.assists}, Rebounds: {self.rebounds}>"
+        return f"<Player Name: {self.name}, Team: {self.team().name}, Position: {self.position}, Points: {self.points}, Assists: {self.assists}, Rebounds: {self.rebounds}>"
+
+    def team(self):
+        from teams import Team
+
+        return Team.find_by_id(self.team_id)
 
     @property
     def name(self):
@@ -29,14 +34,17 @@ class Players:
         self._name = name
 
     @property
-    def team(self):
-        return self._team
+    def team_id(self):
+        return self._team_id
 
-    @team.setter
-    def team(self, team):
-        if not isinstance(team, str):
-            raise TypeError("Team must be a string")
-        self._team = team
+    @team_id.setter
+    def team_id(self, team_id):
+        from teams import Team
+
+        team = Team.find_by_id(team_id)
+        if not isinstance(team, Team):
+            raise TypeError("Team not found.")
+        self._team_id = team_id
 
     @property
     def position(self):
@@ -81,6 +89,42 @@ class Players:
     # Class and Association Methods go here
 
     @classmethod
+    def instance_from_db(cls, row):
+        player = cls(
+            row[1],
+            row[2],
+            row[3],
+            row[4],
+            row[5],
+            row[6],
+            row[0],
+        )
+        cls.all[row[0]] = player
+        return player
+
+    @classmethod
+    def find_by_id(cls, id):
+        try:
+            with CONN:
+                CURSOR.execute("SELECT * FROM players WHERE id=?", (id,))
+                row = CURSOR.fetchone()
+                if row:
+                    return cls.instance_from_db(row)
+        except Exception as e:
+            print("Error finding team by id:", e)
+
+    @classmethod
+    def find_by_name(cls, name):
+        try:
+            with CONN:
+                CURSOR.execute("SELECT * FROM players WHERE name=?", (name,))
+                row = CURSOR.fetchone()
+                if row:
+                    return cls.instance_from_db(row)
+        except Exception as e:
+            print("Error finding team by id:", e)
+
+    @classmethod
     def create_table(cls):
         try:
             with CONN:
@@ -89,12 +133,11 @@ class Players:
                         CREATE TABLE IF NOT EXISTS players (
                             id INTEGER PRIMARY KEY,
                             name TEXT NOT NULL,
-                            team TEXT NOT NULL,
+                            team_id INTEGER,
                             position TEXT NOT NULL,
                             points REAL,
                             assists REAL,
                             rebound REAL,
-                            team_id INTEGER, 
                             FOREIGN KEY (team_id) REFERENCE teams(id)
                             
                         );
@@ -120,12 +163,12 @@ class Players:
             with CONN:
                 CURSOR.execute(
                     """
-                        INSERT INTO players (name, team, position, points, assists, rebounds)
+                        INSERT INTO players (name, team_id, position, points, assists, rebounds)
                         VALUES (?, ?, ?, ?, ?, ?);
                     """,
                     (
                         self.name,
-                        self.team,
+                        self.team_id,
                         self.position,
                         self.points,
                         self.assists,

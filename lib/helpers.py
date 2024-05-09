@@ -244,11 +244,9 @@ def add_player_to_team(teams):
         return
 
     try:
-        with CONN:
-            CURSOR.execute(
-                "UPDATE players SET team = ? WHERE name = ?", (team_name, player_name)
-            )
-            console.print(f"Added player {player_name} to team {team_name}")
+        player.team_id = team.id
+        player.save()
+        console.print(f"Added player {player.name} to team {team.name}")
     except Exception as e:
         print("Error adding player to team:", e)
 
@@ -258,11 +256,8 @@ def remove_player_from_team(teams):
     player_name = input("Enter the name of the player to remove: ").strip()
 
     try:
-        with CONN:
-            CURSOR.execute(
-                "UPDATE players SET team = NULL WHERE name = ?", (player_name,)
-            )
-            console.print(f"Player '{player_name}' removed from team '{team_name}'.")
+        player = Player.find_by_name()
+        console.print(f"Player '{player_name}' removed from team '{team_name}'.")
     except Exception as e:
         print("Error removing player from team:", e)
 
@@ -275,7 +270,13 @@ def load_players_from_db():
             rows = CURSOR.fetchall()
             for row in rows:
                 player = Players(
-                    row[1], row[2], row[3], float(row[4]), float(row[5]), float(row[6])
+                    row[1],
+                    row[2],
+                    row[3],
+                    float(row[4]),
+                    float(row[5]),
+                    float(row[6]),
+                    row[0],
                 )
                 players.append(player)
     except Exception as e:
@@ -319,10 +320,10 @@ def create_user():
     if player is None:
         new_player = User.create(name)
         print(f"Welcome, {new_player.name}!")
-        start(new_player)
+        start()
     else:
         print(f"Welcome back, {player.name}!")
-        start(player)
+        start()
 
 
 def delete_user():

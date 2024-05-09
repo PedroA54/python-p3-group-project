@@ -8,7 +8,7 @@ class User:
         self.name = name
 
     def __repr__(self):
-        return f"User {self.id}: {self.name}"
+        return f"User: {self.name}"  # Changed from self.id to self.name
 
     #! Properties
 
@@ -39,30 +39,38 @@ class User:
 
     @classmethod
     def find_by_name(cls, name):
-        CURSOR.execute(
-            """
-               SELECT * FROM users
-               WHERE name is ?;
-           """,
-            (name,),
-        )
-        return name
+        try:
+            with CONN:
+                CURSOR.execute(
+                    """
+                       SELECT * FROM users
+                       WHERE name = ?;
+                   """,
+                    (name,),
+                )
+                row = CURSOR.fetchone()
+                return cls.instance_from_db(row) if row else None
+        except Exception as e:
+            print("Error fetching user by name:", e)
 
     @classmethod
     def save(cls):
-        sql = """
-           INSERT INTO users (name, id)
-           VALUES(?, ?)
-       """
         try:
-            CURSOR.execute(sql, (cls.name, cls._id))
-            CONN.commit()
-            cls._id = CURSOR.lastrowid
+            with CONN:
+                CURSOR.execute(
+                    """
+                       INSERT INTO users (name)
+                       VALUES (?);
+                   """,
+                    (cls.name,),
+                )
+                CONN.commit()
+                cls.id = CURSOR.lastrowid  # Changed from self.id to cls.id
+                return cls.name
+        except IntegrityError as e:
+            print("Name must be provided")
         except Exception as e:
-            print("An Error Occurred:", e)
-            raise Exception
-
-        return cls.name
+            print("We could not save this user:", e)
 
     @classmethod
     def create(cls, name):
@@ -106,26 +114,9 @@ class User:
     def instance_from_db(cls, row):
         try:
             user = cls(row[1], row[0])
-            cls.all[user.id] = user
             return user
         except Exception as e:
             print("Error fetching user from database:", e)
-
-    @classmethod
-    def find_by_name(cls, name):
-        try:
-            with CONN:
-                CURSOR.execute(
-                    """
-                       SELECT * FROM users
-                       WHERE name =?;
-                   """,
-                    (name,),
-                )
-                row = CURSOR.fetchone()
-                return cls.instance_from_db(row) if row else None
-        except Exception as e:
-            print("Error fetching user by name:", e)
 
     @classmethod
     def find_by_id(cls, id):
@@ -133,7 +124,7 @@ class User:
             with CONN:
                 CURSOR.execute(
                     """
-                       SELECT * FROM users WHERE id =?;
+                       SELECT * FROM users WHERE id = ?;
                    """,
                     (id,),
                 )
@@ -171,7 +162,6 @@ class User:
                 )
                 CONN.commit()
                 self.id = CURSOR.lastrowid
-                type(self).all[self.id] = self
                 return self
         except IntegrityError as e:
             print("Name must be provided")
@@ -183,12 +173,11 @@ class User:
             with CONN:
                 CURSOR.execute(
                     """
-                       DELETE FROM users WHERE id =?;
+                       DELETE FROM users WHERE id = ?;
                    """,
                     (self.id,),
                 )
                 CONN.commit()
-                del type(self).all[self.id]
                 self.id = None
         except Exception as e:
             print("We could not delete this user:", e)
