@@ -1,165 +1,94 @@
 from models.__init__ import CONN, CURSOR
-import click
+from models.teams import Team
+from sqlite3 import IntegrityError
 
 
 class User:
-    current_user = None
-
-    def __init__(self, name, id=None):
+    def __init__(self, name):
         self.name = name
-        self.id = id
 
     def __repr__(self):
-        return f"User ID: {self.id} || User Name: {self.name}"
+        return f"User {self.id}: {self.name}"
 
-    @classmethod
-    def find_by_name(cls, name):
-        try:
-            return cls.get_user_by_name(name)
-        except Exception as e:
-            print("An error occurred while finding user by name:", e)
-            return None
+    #! Properties
 
     @property
     def name(self):
         return self._name
 
     @name.setter
-    def name(self, name):
-        if not isinstance(name, str):
-            raise ValueError("Name must be a string")
-        elif not 1 <= len(name) <= 20:
-            raise ValueError("Name must be between 1 and 20 characters")
+    def name(self, new_name):
+        if not isinstance(new_name, str):
+            raise TypeError("Name must be a string")
+        elif len(new_name) < 3:
+            raise ValueError("Name must be 3 or more characters")
         else:
-            self._name = name
+            self._name = new_name
 
-    @property
-    def id(self):
-        return self._id
+    #! Association Methods
 
-    @id.setter
-    def id(self, id):
-        if hasattr(self, "id"):
-            raise AttributeError("You are not allowed to change the id")
-        else:
-            self._id = id
+    @classmethod
+    def get_roster(cls):
+        CURSOR.execute(
+            """
+              SELECT * from players
+           """
+        )
+        rows = CURSOR.fetchall()
+        return [cls(row[1], row[2], row[0]) for row in rows]
 
-    # CRUD operations
+    @classmethod
+    def find_by_name(cls, name):
+        CURSOR.execute(
+            """
+               SELECT * FROM users
+               WHERE name is ?;
+           """,
+            (name,),
+        )
+        return name
 
-    def save(self):
-        sql = """ 
-            INSERT INTO users (name, id)
-            VALUES(?, ?)
-        """
-        try:
-            CURSOR.execute(sql, (self.name, self.id))
-            CONN.commit()
-            self._id = CURSOR.lastrowid
-        except Exception as e:
-            print("An Error Occurred:", e)
-            raise Exception
-
-        return self
-
-    def update(self):
+    @classmethod
+    def save(cls):
         sql = """
-            UPDATE users
-            SET name = ?
-            WHERE id = ?
-        """
+           INSERT INTO users (name, id)
+           VALUES(?, ?)
+       """
         try:
-            CURSOR.execute(sql, (self.name, self.id))
+            CURSOR.execute(sql, (cls.name, cls._id))
             CONN.commit()
+            cls._id = CURSOR.lastrowid
         except Exception as e:
             print("An Error Occurred:", e)
             raise Exception
 
-    def delete(self):
-        sql = """ 
-            DELETE FROM users
-            WHERE id = ?
-        """
+        return cls.name
+
+    @classmethod
+    def create(cls, name):
         try:
-            CURSOR.execute(sql, (self.id,))
-            CONN.commit()
+            with CONN:
+                new_user = cls(name)
+                new_user.save()
+                return new_user
         except Exception as e:
-            print("An Error Occurred:", e)
-            raise Exception
+            print("Error creating new user:", e)
 
+    #! ORM Class Methods
     @classmethod
-    def create(cls, name, id=None):
-        new_user = cls(name, id)
-        new_user.save()
-        return new_user
-
-    @classmethod
-    def instance_from_db(cls, row):
-        return cls(row[1], row[0])
-
-    @classmethod
-    def get_all(cls, limit=None, offset=None):
+    def create_table(cls):
         try:
-            query = "SELECT * FROM users"
-            if limit is not None and offset is not None:
-                query += f" LIMIT {limit} OFFSET {offset}"
-            CURSOR.execute(query)
-            rows = CURSOR.fetchall()
-            return [cls(row[1], row[0]) for row in rows]
-        except Exception as e:
-            CONN.rollback()
-            print("An Error Occurred: ", e)
-            raise Exception
-
-    @classmethod
-    def get_user_by_id(cls, id):
-        try:
-            query = "SELECT * FROM users WHERE id = ?"
-            CURSOR.execute(query, (id,))
-            obj = CURSOR.fetchone()
-            return cls(obj[1], obj[0])
-        except Exception as e:
-            CONN.rollback()
-            print("An Error Occurred: ", e)
-            raise Exception
-
-    @classmethod
-    def get_user_by_name(cls, name):
-        try:
-            query = "SELECT * FROM users WHERE name = ?"
-            CURSOR.execute(query, (name,))
-            obj = CURSOR.fetchone()
-            return cls(obj[1], obj[0])
-        except Exception as e:
-            CONN.rollback()
-            print("An Error Occurred: ", e)
-            raise Exception
-
-    @classmethod
-    def set_current_user(cls, user):
-        if not cls.current_user:
-            cls.current_user = user
-        else:
-            print("User already logged in")
-            click.pause()
-
-
-@classmethod
-def create_table(cls):
-    try:
-        with CONN:
-            CURSOR.execute(
-                """
-                        CREATE TABLE IF NOT EXISTS user (
-                            id INTEGER PRIMARY KEY,
-                            name TEXT NOT NULL,
-                            condition TEXT,
-                            phase TEXT NOT NULL,
-                            is_alive BOOLEAN NOT NULL
-                        );
+            with CONN:
+                CURSOR.execute(
                     """
-            )
-    except Exception as e:
-        return e
+                       CREATE TABLE IF NOT EXISTS users (
+                           id INTEGER PRIMARY KEY,
+                           name TEXT
+                       );
+                   """
+                )
+        except Exception as e:
+            return e
 
     @classmethod
     def drop_table(cls):
@@ -167,8 +96,99 @@ def create_table(cls):
             with CONN:
                 CURSOR.execute(
                     """
-                    DROP TABLE IF EXISTS users;
-                """
+                   DROP TABLE IF EXISTS users;
+               """
                 )
         except Exception as e:
             print("Error dropping users table:", e)
+
+    @classmethod
+    def instance_from_db(cls, row):
+        try:
+            user = cls(row[1], row[0])
+            cls.all[user.id] = user
+            return user
+        except Exception as e:
+            print("Error fetching user from database:", e)
+
+    @classmethod
+    def find_by_name(cls, name):
+        try:
+            with CONN:
+                CURSOR.execute(
+                    """
+                       SELECT * FROM users
+                       WHERE name =?;
+                   """,
+                    (name,),
+                )
+                row = CURSOR.fetchone()
+                return cls.instance_from_db(row) if row else None
+        except Exception as e:
+            print("Error fetching user by name:", e)
+
+    @classmethod
+    def find_by_id(cls, id):
+        try:
+            with CONN:
+                CURSOR.execute(
+                    """
+                       SELECT * FROM users WHERE id =?;
+                   """,
+                    (id,),
+                )
+                row = CURSOR.fetchone()
+                return cls.instance_from_db(row) if row else None
+        except Exception as e:
+            print("Error fetching user by id:", e)
+
+    @classmethod
+    def find_by(cls, attr, val):
+        try:
+            with CONN:
+                CURSOR.execute(
+                    f"""
+                   SELECT * FROM users
+                   WHERE {attr} IS ?;
+                   """,
+                    (val,),
+                )
+                row = CURSOR.fetchone()
+                return cls(row[1], row[0]) if row else None
+        except Exception as e:
+            print("Error finding users by attribute:", e)
+
+    #! ORM Instance Method
+    def save(self):
+        try:
+            with CONN:
+                CURSOR.execute(
+                    """
+                       INSERT INTO users (name)
+                       VALUES (?);
+                   """,
+                    (self.name,),
+                )
+                CONN.commit()
+                self.id = CURSOR.lastrowid
+                type(self).all[self.id] = self
+                return self
+        except IntegrityError as e:
+            print("Name must be provided")
+        except Exception as e:
+            print("We could not save this user:", e)
+
+    def delete(self):
+        try:
+            with CONN:
+                CURSOR.execute(
+                    """
+                       DELETE FROM users WHERE id =?;
+                   """,
+                    (self.id,),
+                )
+                CONN.commit()
+                del type(self).all[self.id]
+                self.id = None
+        except Exception as e:
+            print("We could not delete this user:", e)

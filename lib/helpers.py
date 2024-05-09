@@ -7,7 +7,9 @@ from rich.console import Console
 import click
 import csv
 import sys
+import sqlite3
 
+from models import CURSOR, CONN
 
 console = Console()
 EXIT_WORDS = ["exit", "quit"]
@@ -30,7 +32,6 @@ def welcome():
 
 # mainMenu
 def menu():
-
     console.print("Please select an option: ", style="bold underline purple on white")
     console.print("1. How To Use")
     console.print("2. Get Started")
@@ -42,7 +43,6 @@ def menu():
 # subMenu1
 def start():
     while True:
-
         console.print(
             "Please select an option: ", style="bold underline purple on white"
         )
@@ -80,32 +80,22 @@ def how_to_use():
     console.print("4. Have Fun!")
 
 
-# Gets Data from team.csv
-def load_teams_from_csv(filename):
+def load_teams_from_db():
     teams = []
-
-    with open(filename, "r", newline="") as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            team = Team(
-                row["NbaTeam"],
-                row["City"],
-                int(row["Wins"]),
-                int(row["Losses"]),
-                int(row["Championchips"]),
-                row["PG"],
-                row["SG"],
-                row["SF"],
-                row["PF"],
-                row["C"],
-            )
-            teams.append(team)
-
+    try:
+        with CONN:
+            CURSOR.execute("SELECT * FROM teams")
+            rows = CURSOR.fetchall()
+            for row in rows:
+                team = Team(*row)
+                teams.append(team)
+    except Exception as e:
+        print("Error loading teams from database:", e)
     return teams
 
 
 def team_stats():
-    teams = load_teams_from_csv("lib/data/team.csv")
+    teams = load_teams_from_db()
     total_teams = len(teams)
     current_page = 1
     teams_per_page = 5
@@ -140,50 +130,6 @@ def team_stats():
             remove_player_from_team(teams)
         elif user_input == "7":
             exit_program()
-        else:
-            print("Invalid choice!")
-
-        sys.stdin.flush()
-
-
-def add_player_to_team(teams):
-    players = load_players_from_csv("lib/data/players.csv")
-    player_name = input("Enter player name to add to team: ").strip()
-
-    player = next(
-        (player for player in players if player.name.lower() == player_name.lower()),
-        None,
-    )
-
-    if player is None:
-        console.print(f"No player found with the name '{player_name}'")
-        return
-
-    # Assuming you have a team object already
-    team_name = input("Enter team name to add player to: ").strip()
-    team = next(
-        (team for team in teams if team.nba_team.lower() == team_name.lower()), None
-    )
-
-    if team is None:
-        console.print(f"No team found with the name '{team_name}'")
-        return
-
-    team.add_player(player)
-    console.print(f"Added player {player_name} to team {team_name}")
-
-
-def remove_player_from_team(teams):
-    team_name = input("Enter the name of the team: ").strip()
-    player_name = input("Enter the name of the player to remove: ").strip()
-
-    for team in teams:
-        if team.nba_team.lower() == team_name.lower():
-            team.remove_player(player_name)
-            console.print(f"Player '{player_name}' removed from team '{team_name}'.")
-            return
-
-    console.print(f"No team found with the name '{team_name}'.")
 
 
 def all_teams(teams, page_number, teams_per_page):
@@ -194,16 +140,16 @@ def all_teams(teams, page_number, teams_per_page):
         console.print(f" Page {page_number}\n")
         print("==================")
         for team in teams[start_index:end_index]:
-            console.print(f"Team: {team.nba_team}")
-            console.print(f"City: {team._city}")  # Accessing the city attribute
-            console.print(f"Wins: {team._wins}")
-            console.print(f"Losses: {team._losses}")
-            console.print(f"Championships: {team._championships}")
-            console.print(f"PG: {team._pg}")
-            console.print(f"SG: {team._sg}")
-            console.print(f"SF: {team._sf}")
-            console.print(f"PF: {team._pf}")
-            console.print(f"C: {team._c}")
+            console.print(f"Team: {team.team}")
+            console.print(f"City: {team.city}")  # Accessing the city attribute
+            console.print(f"Wins: {team.wins}")
+            console.print(f"Losses: {team.losses}")
+            console.print(f"Championships: {team.championships}")
+            console.print(f"PG: {team.pg}")
+            console.print(f"SG: {team.sg}")
+            console.print(f"SF: {team.sf}")
+            console.print(f"PF: {team.pf}")
+            console.print(f"C: {team.c}")
             console.print()
 
         choice = input(
@@ -217,13 +163,11 @@ def all_teams(teams, page_number, teams_per_page):
             break
 
 
-# Gets teams only the East
 def east_team():
-    teams = load_teams_from_csv("lib/data/team.csv")
-
+    teams = load_teams_from_db()
     console.print("East NBA Teams:\n")
     for team in teams[0:15]:
-        console.print(f"Team: {team.nba_team}")
+        console.print(f"Team: {team.team}")
         console.print(f"City: {team.city}")
         console.print(f"Wins: {team.wins}")
         console.print(f"Losses: {team.losses}")
@@ -236,32 +180,11 @@ def east_team():
         console.print()
 
 
-def load_players_from_csv(filename):
-    players = []
-
-    with open(filename, "r", newline="") as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            player = Players(
-                row["Name"],
-                row["Team"],
-                row["Position"],
-                float(row["Points"]),
-                float(row["Assists"]),
-                float(row["Rebounds"]),
-            )
-            players.append(player)
-
-    return players
-
-
-# Gets team only on the west
 def west_team():
-    teams = load_teams_from_csv("lib/data/team.csv")
-
+    teams = load_teams_from_db()
     console.print("West NBA Teams:\n")
     for team in teams[16:31]:
-        console.print(f"Team: {team.nba_team}")
+        console.print(f"Team: {team.team}")
         console.print(f"City: {team.city}")
         console.print(f"Wins: {team.wins}")
         console.print(f"Losses: {team.losses}")
@@ -274,17 +197,15 @@ def west_team():
         console.print()
 
 
-# Searches Team by Name
 def search_team(teams):
     team_name = input("Enter the name of the team: ").strip()
     found_team = None
     for team in teams:
-        if team.nba_team.lower() == team_name.lower():
+        if team.city.lower() == team_name.lower():
             found_team = team
             break
-
     if found_team:
-        console.print(f"Team: {found_team.nba_team}")
+        console.print(f"Team: {found_team.team}")
         console.print(f"City: {found_team.city}")
         console.print(f"Wins: {found_team.wins}")
         console.print(f"Losses: {found_team.losses}")
@@ -298,10 +219,72 @@ def search_team(teams):
         console.print(f"No team found with the name '{team_name}'.")
 
 
+def add_player_to_team(teams):
+    players = load_players_from_db()
+    player_name = input("Enter player name to add to team: ").strip()
+
+    player = next(
+        (player for player in players if player.name.lower() == player_name.lower()),
+        None,
+    )
+
+    if player is None:
+        console.print(f"No player found with the name '{player_name}'")
+        return
+
+    team_name = input("Enter team name to add player to: ").strip()
+    team = next(
+        (team for team in teams if team.team.lower() == team_name.lower()), None
+    )
+
+    if team is None:
+        console.print(f"No team found with the name '{team_name}'")
+        return
+
+    try:
+        with CONN:
+            CURSOR.execute(
+                "UPDATE players SET team = ? WHERE name = ?", (team_name, player_name)
+            )
+            console.print(f"Added player {player_name} to team {team_name}")
+    except Exception as e:
+        print("Error adding player to team:", e)
+
+
+def remove_player_from_team(teams):
+    team_name = input("Enter the name of the team: ").strip()
+    player_name = input("Enter the name of the player to remove: ").strip()
+
+    try:
+        with CONN:
+            CURSOR.execute(
+                "UPDATE players SET team = NULL WHERE name = ?", (player_name,)
+            )
+            console.print(f"Player '{player_name}' removed from team '{team_name}'.")
+    except Exception as e:
+        print("Error removing player from team:", e)
+
+
+def load_players_from_db():
+    players = []
+    try:
+        with CONN:
+            CURSOR.execute("SELECT * FROM players")
+            rows = CURSOR.fetchall()
+            for row in rows:
+                player = Players(
+                    row[1], row[2], row[3], float(row[4]), float(row[5]), float(row[6])
+                )
+                players.append(player)
+    except Exception as e:
+        print("Error loading players from database:", e)
+    return players
+
+
 def team_roster():
     search_name = input("Enter player name to search: ").strip()
 
-    players = load_players_from_csv("lib/data/players.csv")
+    players = load_players_from_db()
 
     found_players = [
         player for player in players if player.name.lower() == search_name.lower()
