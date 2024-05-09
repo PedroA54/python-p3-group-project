@@ -124,7 +124,7 @@ def team_stats():
         elif user_input == "3":
             west_team()
         elif user_input == "4":
-            search_team(teams)
+            search_team()
         elif user_input == "5":
             add_player_to_team(teams)
         elif user_input == "6":
@@ -199,15 +199,11 @@ def west_team():
         console.print()
 
 
-def search_team(teams):
-    team_name = input("Enter the name of the City: ").strip()
-    found_team = None
-    for team in teams:
-        if team.city.lower() == team_name.lower():
-            found_team = team
-            break
+def search_team():
+    city = input("Enter the name of the City: ").strip()
+    found_team = Team.find_by_city(city)
     if found_team:
-        console.print(f"id: {team.id}")
+        console.print(f"id: {found_team.id}")
         console.print(f"Team: {found_team.team}")
         console.print(f"City: {found_team.city}")
         console.print(f"Wins: {found_team.wins}")
@@ -219,35 +215,34 @@ def search_team(teams):
         console.print(f"PF: {found_team.pf}")
         console.print(f"C: {found_team.c}")
     else:
-        console.print(f"No team found with the name '{team_name}'.")
+        console.print(f"No team found in city '{city}'.")
 
 
 def add_player_to_team(teams):
-    players = load_players_from_db()
+   
     player_name = input("Enter player name to add to team: ").strip()
 
-    player = next(
-        (player for player in players if player.name.lower() == player_name.lower()),
-        None,
-    )
-
+    player = Players.find_by_name(player_name)
     if player is None:
         console.print(f"No player found with the name '{player_name}'")
         return
 
     team_name = input("Enter team name to add player to: ").strip()
-    team = next(
-        (team for team in teams if team.team.lower() == team_name.lower()), None
-    )
+    team = Team.find_by_name(team_name)
 
     if team is None:
         console.print(f"No team found with the name '{team_name}'")
         return
 
     try:
+
+        import ipdb
+        ipdb.set_trace()
         player.team_id = team.id
+
         player.save()
-        console.print(f"Added player {player.name} to team {team.name}")
+      
+        console.print(f"Added player {player.name} to team {team.team}")
     except Exception as e:
         print("Error adding player to team:", e)
 
@@ -257,7 +252,7 @@ def remove_player_from_team(teams):
     player_name = input("Enter the name of the player to remove: ").strip()
 
     try:
-        player = Player.find_by_name()
+        player = player.find_by_name()
         console.print(f"Player '{player_name}' removed from team '{team_name}'.")
     except Exception as e:
         print("Error removing player from team:", e)
@@ -301,8 +296,15 @@ def team_roster():
     console.print(f"Players found with the name '{search_name}':\n")
 
     for player in found_players:
+        try:
+            team = Team.find_by_id(player.team_id)
+            team_name = team.team if team else "Unknown"
+        except Exception as e:
+            print(f"Error finding team for player {player.name}: {e}")
+            team_name = "Unknown"
+
         console.print(f"Name: {player.name}")
-        console.print(f"Team: {player.team}")
+        console.print(f"Team: {team_name}")
         console.print(f"Position: {player.position}")
         console.print(f"Points: {player.points}")
         console.print(f"Assists: {player.assists}")
