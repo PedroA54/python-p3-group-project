@@ -16,10 +16,10 @@ class Players:
         self.id = id
 
     def __repr__(self):
-        return f"<Player Name: {self.name}, Team: {self.team().name}, Position: {self.position}, Points: {self.points}, Assists: {self.assists}, Rebounds: {self.rebounds}>"
+        return f"<Player Name: {self.name}, Team: {self.team().team}, Position: {self.position}, Points: {self.points}, Assists: {self.assists}, Rebounds: {self.rebounds}>"
 
     def team(self):
-        from teams import Team
+        from models.teams import Team
 
         return Team.find_by_id(self.team_id)
 
@@ -39,7 +39,7 @@ class Players:
 
     @team_id.setter
     def team_id(self, team_id):
-        from teams import Team
+        from models.teams import Team
 
         team = Team.find_by_id(team_id)
         if not isinstance(team, Team):
@@ -111,18 +111,18 @@ class Players:
                 if row:
                     return cls.instance_from_db(row)
         except Exception as e:
-            print("Error finding team by id:", e)
+            print("Error finding player by id:", e)
 
     @classmethod
     def find_by_name(cls, name):
         try:
             with CONN:
-                CURSOR.execute("SELECT * FROM players WHERE name=?", (name,))
+                CURSOR.execute("SELECT * FROM players WHERE LOWER(name) LIKE LOWER(?)", (name,))
                 row = CURSOR.fetchone()
                 if row:
                     return cls.instance_from_db(row)
         except Exception as e:
-            print("Error finding team by id:", e)
+            print("Error finding player by name:", e)
 
     @classmethod
     def create_table(cls):
