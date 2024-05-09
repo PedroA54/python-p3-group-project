@@ -92,7 +92,10 @@ class Players:
                             position TEXT NOT NULL,
                             points REAL,
                             assists REAL,
-                            rebounds REAL
+                            rebound REAL,
+                            team_id INTEGER, 
+                            FOREIGN KEY (team_id) REFERENCE teams(id)
+                            
                         );
                     """
                 )

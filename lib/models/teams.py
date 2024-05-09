@@ -276,6 +276,3 @@ class Team:
                 return self
         except Exception as e:
             print("Error saving team:", e)
-
-
-Team.create_table()
