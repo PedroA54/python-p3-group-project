@@ -261,9 +261,6 @@ def add_player_to_team(teams):
 
     try:
 
-        import ipdb
-
-        ipdb.set_trace()
         player.team_id = team.id
 
         player.save()
@@ -356,16 +353,25 @@ def create_user():
 
 
 def delete_user():
-    name = input("Enter your name: ").strip()
+    try:
+        name = input("Enter the name of the user you want to delete: ").strip()
 
-    if name.lower() in EXIT_WORDS:
-        exit_program()
+        if name.lower() in EXIT_WORDS:
+            exit_program()
 
-    player = User.find_by_name(name)
-    if player:
-        player.delete()
-    else:
-        print(f"Could not find {name}.", style="subhead")
+        if not name:
+            print("Name cannot be empty. Please try again.")
+            delete_user()
+
+        # Assuming EXIT_WORDS is defined somewhere in your code
+        player = User.find_by_name(name)
+
+        if player:
+            player.delete()
+        else:
+            print(f"Could not find {name}.")
+    except Exception as e:
+        print("An error occurred:", e)
 
 
 def exit_program():
