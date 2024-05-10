@@ -1,16 +1,14 @@
 from models.__init__ import CONN, CURSOR
-from models.teams import Team
 from sqlite3 import IntegrityError
 
 
 class User:
     def __init__(self, name):
         self.name = name
+        self.id = None
 
     def __repr__(self):
-        return f"User: {self.name}"  # Changed from self.id to self.name
-
-    #! Properties
+        return f"User(id={self.id}, name='{self.name}')"
 
     @property
     def name(self):
@@ -24,18 +22,6 @@ class User:
             raise ValueError("Name must be 3 or more characters")
         else:
             self._name = new_name
-
-    #! Association Methods
-
-    @classmethod
-    def get_roster(cls):
-        CURSOR.execute(
-            """
-              SELECT * from players
-            """
-        )
-        rows = CURSOR.fetchall()
-        return [cls(row[1], row[2], row[0]) for row in rows]
 
     @classmethod
     def find_by_name(cls, name):
@@ -54,7 +40,7 @@ class User:
             print("Error fetching user by name:", e)
 
     @classmethod
-    def save(cls):
+    def create(cls, name):
         try:
             with CONN:
                 CURSOR.execute(
@@ -62,27 +48,58 @@ class User:
                         INSERT INTO users (name)
                         VALUES (?);
                     """,
-                    (cls.name,),
+                    (name,),
                 )
                 CONN.commit()
-                cls.id = CURSOR.lastrowid  # Changed from self.id to cls.id
-                return cls.name
+                user_id = CURSOR.lastrowid
+                new_user = cls(name)
+                new_user.id = user_id
+                return new_user
         except IntegrityError as e:
             print("Name must be provided")
         except Exception as e:
-            print("We could not save this user:", e)
-
-    @classmethod
-    def create(cls, name):
-        try:
-            with CONN:
-                new_user = cls(name)
-                new_user.save()
-                return new_user
-        except Exception as e:
             print("Error creating new user:", e)
 
-    #! ORM Class Methods
+    @classmethod
+    def instance_from_db(cls, row):
+        if row:
+            user_id, name = row[0], row[1]
+            user = cls(name)
+            user.id = user_id
+            return user
+        return None
+
+    def save(self):
+        try:
+            with CONN:
+                CURSOR.execute(
+                    """
+                        INSERT INTO users (name)
+                        VALUES (?);
+                    """,
+                    (self.name,),
+                )
+                CONN.commit()
+                self.id = CURSOR.lastrowid
+        except IntegrityError as e:
+            print("Name must be provided")
+        except Exception as e:
+            print("Error saving user:", e)
+
+    def delete(self):
+        try:
+            with CONN:
+                CURSOR.execute(
+                    """
+                        DELETE FROM users WHERE id = ?;
+                    """,
+                    (self.id,),
+                )
+                CONN.commit()
+                print(f"{self.name} has been successfully deleted.")
+        except Exception as e:
+            print("Error deleting user:", e)
+
     @classmethod
     def create_table(cls):
         try:
@@ -96,7 +113,7 @@ class User:
                     """
                 )
         except Exception as e:
-            return e
+            print("Error creating users table:", e)
 
     @classmethod
     def drop_table(cls):
@@ -104,80 +121,8 @@ class User:
             with CONN:
                 CURSOR.execute(
                     """
-                    DROP TABLE IF EXISTS users;
-                """
+                        DROP TABLE IF EXISTS users;
+                    """
                 )
         except Exception as e:
             print("Error dropping users table:", e)
-
-    @classmethod
-    def instance_from_db(cls, row):
-        try:
-            user = cls(row[1], row[0])
-            return user
-        except Exception as e:
-            print("Error fetching user from database:", e)
-
-    @classmethod
-    def find_by_id(cls, id):
-        try:
-            with CONN:
-                CURSOR.execute(
-                    """
-                       SELECT * FROM users WHERE id = ?;
-                    """,
-                    (id,),
-                )
-                row = CURSOR.fetchone()
-                return cls.instance_from_db(row) if row else None
-        except Exception as e:
-            print("Error fetching user by id:", e)
-
-    @classmethod
-    def find_by(cls, attr, val):
-        try:
-            with CONN:
-                CURSOR.execute(
-                    f"""
-                   SELECT * FROM users
-                    WHERE {attr} IS ?;
-                    """,
-                    (val,),
-                )
-                row = CURSOR.fetchone()
-                return cls(row[1], row[0]) if row else None
-        except Exception as e:
-            print("Error finding users by attribute:", e)
-
-    #! ORM Instance Method
-    def save(self):
-        try:
-            with CONN:
-                CURSOR.execute(
-                    """
-                        INSERT INTO users (name)
-                        VALUES (?);
-                    """,
-                    (self.name,),
-                )
-                CONN.commit()
-                self.id = CURSOR.lastrowid
-                return self
-        except IntegrityError as e:
-            print("Name must be provided")
-        except Exception as e:
-            print("We could not save this user:", e)
-
-    def delete(self):
-        try:
-            with CONN:
-                CURSOR.execute(
-                    """
-                        DELETE FROM users WHERE id = ?;
-                    """,
-                    (self.id,),
-                )
-                CONN.commit()
-                self.id = None
-        except Exception as e:
-            print("We could not delete this user:", e)
