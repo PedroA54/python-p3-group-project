@@ -117,7 +117,9 @@ class Players:
     def find_by_name(cls, name):
         try:
             with CONN:
-                CURSOR.execute("SELECT * FROM players WHERE LOWER(name) LIKE LOWER(?)", (name,))
+                CURSOR.execute(
+                    "SELECT * FROM players WHERE LOWER(name) LIKE LOWER(?)", (name,)
+                )
                 row = CURSOR.fetchone()
                 if row:
                     return cls.instance_from_db(row)

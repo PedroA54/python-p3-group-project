@@ -32,7 +32,7 @@ class User:
         CURSOR.execute(
             """
               SELECT * from players
-           """
+            """
         )
         rows = CURSOR.fetchall()
         return [cls(row[1], row[2], row[0]) for row in rows]
@@ -44,8 +44,8 @@ class User:
                 CURSOR.execute(
                     """
                        SELECT * FROM users
-                       WHERE name = ?;
-                   """,
+                        WHERE name = ?;
+                    """,
                     (name,),
                 )
                 row = CURSOR.fetchone()
@@ -59,9 +59,9 @@ class User:
             with CONN:
                 CURSOR.execute(
                     """
-                       INSERT INTO users (name)
-                       VALUES (?);
-                   """,
+                        INSERT INTO users (name)
+                        VALUES (?);
+                    """,
                     (cls.name,),
                 )
                 CONN.commit()
@@ -89,11 +89,11 @@ class User:
             with CONN:
                 CURSOR.execute(
                     """
-                       CREATE TABLE IF NOT EXISTS users (
-                           id INTEGER PRIMARY KEY,
-                           name TEXT
-                       );
-                   """
+                        CREATE TABLE IF NOT EXISTS users (
+                            id INTEGER PRIMARY KEY,
+                            name TEXT
+                        );
+                    """
                 )
         except Exception as e:
             return e
@@ -104,8 +104,8 @@ class User:
             with CONN:
                 CURSOR.execute(
                     """
-                   DROP TABLE IF EXISTS users;
-               """
+                    DROP TABLE IF EXISTS users;
+                """
                 )
         except Exception as e:
             print("Error dropping users table:", e)
@@ -125,7 +125,7 @@ class User:
                 CURSOR.execute(
                     """
                        SELECT * FROM users WHERE id = ?;
-                   """,
+                    """,
                     (id,),
                 )
                 row = CURSOR.fetchone()
@@ -140,8 +140,8 @@ class User:
                 CURSOR.execute(
                     f"""
                    SELECT * FROM users
-                   WHERE {attr} IS ?;
-                   """,
+                    WHERE {attr} IS ?;
+                    """,
                     (val,),
                 )
                 row = CURSOR.fetchone()
@@ -155,9 +155,9 @@ class User:
             with CONN:
                 CURSOR.execute(
                     """
-                       INSERT INTO users (name)
-                       VALUES (?);
-                   """,
+                        INSERT INTO users (name)
+                        VALUES (?);
+                    """,
                     (self.name,),
                 )
                 CONN.commit()
@@ -173,8 +173,8 @@ class User:
             with CONN:
                 CURSOR.execute(
                     """
-                       DELETE FROM users WHERE id = ?;
-                   """,
+                        DELETE FROM users WHERE id = ?;
+                    """,
                     (self.id,),
                 )
                 CONN.commit()

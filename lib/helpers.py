@@ -1,15 +1,12 @@
 # lib/helpers.py
+from models import CURSOR, CONN
 from models.players import Players
 from models.teams import Team
 from models.user import User
 from seed import start_program
 from rich.console import Console
 import click
-import csv
-import sys
-import sqlite3
 
-from models import CURSOR, CONN
 
 console = Console()
 EXIT_WORDS = ["exit", "quit"]
