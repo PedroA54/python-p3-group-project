@@ -72,12 +72,9 @@ def how_to_use():
     console.print("Welcome to NBA Stat Tracker!")
     console.print("Here is how it works: ", style="bold underline purple on white")
     console.print("1. Select 'Get Started'")
-    console.print(
-        """2. Choose what statistics you would like to see: Choose from a team's current seasonal record their starting roster"""
-    )
-    console.print(
-        "3. Search what team whose statistics you'd like to see by their name."
-    )
+    console.print("2. Choose to view 'Team' statistics ")
+    console.print("3. Choose to view 'Player' statistics")
+    console.print("4. Create 'User'")
     console.print("4. Have Fun!")
 
 
@@ -120,9 +117,9 @@ def team_stats():
         elif user_input == "1":
             current_page = all_teams(teams, current_page, teams_per_page)
         elif user_input == "2":
-            east_team()
+            east_team(current_page, teams_per_page)
         elif user_input == "3":
-            west_team()
+            west_team(current_page, teams_per_page)
         elif user_input == "4":
             search_team()
         elif user_input == "5":
@@ -141,7 +138,6 @@ def all_teams(teams, page_number, teams_per_page):
         console.print(f" Page {page_number}\n")
         print("==================")
         for team in teams[start_index:end_index]:
-            console.print(f"id: {team.id}")
             console.print(f"Team: {team.team}")
             console.print(f"City: {team.city}")  # Accessing the city attribute
             console.print(f"Wins: {team.wins}")
@@ -165,38 +161,70 @@ def all_teams(teams, page_number, teams_per_page):
             break
 
 
-def east_team():
+def east_team(page_number, teams_per_page=5):
     teams = load_teams_from_db()
-    console.print("East NBA Teams:\n")
-    for team in teams[0:15]:
-        console.print(f"Team: {team.team}")
-        console.print(f"City: {team.city}")
-        console.print(f"Wins: {team.wins}")
-        console.print(f"Losses: {team.losses}")
-        console.print(f"Championships: {team.championships}")
-        console.print(f"PG: {team.pg}")
-        console.print(f"SG: {team.sg}")
-        console.print(f"SF: {team.sf}")
-        console.print(f"PF: {team.pf}")
-        console.print(f"C: {team.c}")
-        console.print()
+    while True:
+        start_index = (page_number - 1) * teams_per_page
+        end_index = min(start_index + teams_per_page, len(teams))
+        console.print("[bold #FF7EF5]East NBA Teams[/bold #FF7EF5]")
+        console.print(f" Page {page_number}\n")
+        print("==================")
+        for team in teams[0:14][start_index:end_index]:
+            console.print(f"Team: {team.team}")
+            console.print(f"City: {team.city}")
+            console.print(f"Wins: {team.wins}")
+            console.print(f"Losses: {team.losses}")
+            console.print(f"Championships: {team.championships}")
+            console.print(f"PG: {team.pg}")
+            console.print(f"SG: {team.sg}")
+            console.print(f"SF: {team.sf}")
+            console.print(f"PF: {team.pf}")
+            console.print(f"C: {team.c}")
+            console.print()
+
+        choice = input(
+            "\nEnter your choice (p: Previous Page, n: Next Page, x: Back to Menu): "
+        )
+        if choice.lower() == "p" and page_number > 1:
+            page_number -= 1
+        elif choice.lower() == "n" and (start_index + teams_per_page) < len(teams):
+            page_number += 1
+        elif choice.lower() == "x":
+            break
 
 
-def west_team():
+def west_team(page_number, teams_per_page=5):
     teams = load_teams_from_db()
-    console.print("West NBA Teams:\n")
-    for team in teams[16:31]:
-        console.print(f"Team: {team.team}")
-        console.print(f"City: {team.city}")
-        console.print(f"Wins: {team.wins}")
-        console.print(f"Losses: {team.losses}")
-        console.print(f"Championships: {team.championships}")
-        console.print(f"PG: {team.pg}")
-        console.print(f"SG: {team.sg}")
-        console.print(f"SF: {team.sf}")
-        console.print(f"PF: {team.pf}")
-        console.print(f"C: {team.c}")
-        console.print()
+    while True:
+        start_index = (page_number - 1) * teams_per_page
+        end_index = min(start_index + teams_per_page, len(teams))
+        console.print("[bold #FF7EF5]West NBA Teams[/bold #FF7EF5]")
+        console.print(f" Page {page_number}\n")
+        print("==================")
+        for team in teams[15:31][start_index:end_index]:
+            console.print(f"Team: {team.team}")
+            console.print(f"City: {team.city}")
+            console.print(f"Wins: {team.wins}")
+            console.print(f"Losses: {team.losses}")
+            console.print(f"Championships: {team.championships}")
+            console.print(f"PG: {team.pg}")
+            console.print(f"SG: {team.sg}")
+            console.print(f"SF: {team.sf}")
+            console.print(f"PF: {team.pf}")
+            console.print(f"C: {team.c}")
+            console.print()
+
+        choice = input(
+            "\nEnter your choice (p: Previous Page, n: Next Page, x: Back to Menu): "
+        )
+        if choice.lower() == "p" and page_number > 1:
+            page_number -= 1
+        elif choice.lower() == "n" and (start_index + teams_per_page) < len(
+            teams[15:31]
+        ):
+            page_number += 1
+        elif choice.lower() == "x":
+            break
 
 
 def search_team():
@@ -219,7 +247,7 @@ def search_team():
 
 
 def add_player_to_team(teams):
-   
+
     player_name = input("Enter player name to add to team: ").strip()
 
     player = Players.find_by_name(player_name)
@@ -237,11 +265,12 @@ def add_player_to_team(teams):
     try:
 
         import ipdb
+
         ipdb.set_trace()
         player.team_id = team.id
 
         player.save()
-      
+
         console.print(f"Added player {player.name} to team {team.team}")
     except Exception as e:
         print("Error adding player to team:", e)
