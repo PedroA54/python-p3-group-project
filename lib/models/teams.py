@@ -26,6 +26,7 @@ class Team:
         self.wins = wins
         self.losses = losses
         self.championships = championships
+
         self.pg = pg
         self.sg = sg
         self.sf = sf
@@ -35,6 +36,16 @@ class Team:
 
     def __repr__(self):
         return f"<Team {self.id}: {self.team}, {self.city}, Wins: {self.wins}, Losses: {self.losses}, Championships: {self.championships}>"
+
+    def players(self):
+        sql = """
+            SELECT * FROM players WHERE team_id = ?
+        """
+
+        player_rows = CURSOR.execute(sql, (self.id,)).fetchall()
+        from players import Players
+
+        return [Players.instance_from_db(player_row) for player_row in player_rows]
 
     @classmethod
     def create_table(cls):
@@ -141,6 +152,7 @@ class Team:
     @classmethod
     def instance_from_db(cls, row):
         team = cls(
+            row[0],
             row[1],
             row[2],
             row[3],
@@ -151,7 +163,6 @@ class Team:
             row[8],
             row[9],
             row[10],
-            row[0],
         )
         cls.all[row[0]] = team
         return team

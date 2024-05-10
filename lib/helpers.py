@@ -67,10 +67,10 @@ def start():
 def how_to_use():
     console.print("Welcome to NBA Stat Tracker!")
     console.print("Here is how it works: ", style="bold underline purple on white")
+    console.print("4. Create 'User'")
     console.print("1. Select 'Get Started'")
     console.print("2. Choose to view 'Team' statistics ")
     console.print("3. Choose to view 'Player' statistics")
-    console.print("4. Create 'User'")
     console.print("4. Have Fun!")
 
 
@@ -135,7 +135,7 @@ def all_teams(teams, page_number, teams_per_page):
         print("==================")
         for team in teams[start_index:end_index]:
             console.print(f"Team: {team.team}")
-            console.print(f"City: {team.city}")  # Accessing the city attribute
+            console.print(f"City: {team.city}")
             console.print(f"Wins: {team.wins}")
             console.print(f"Losses: {team.losses}")
             console.print(f"Championships: {team.championships}")
@@ -227,7 +227,6 @@ def search_team():
     city = input("Enter the name of the City: ").strip()
     found_team = Team.find_by_city(city)
     if found_team:
-        console.print(f"id: {found_team.id}")
         console.print(f"Team: {found_team.team}")
         console.print(f"City: {found_team.city}")
         console.print(f"Wins: {found_team.wins}")
