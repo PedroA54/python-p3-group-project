@@ -8,7 +8,7 @@ class Team:
 
     def __init__(
         self,
-
+        id,
         team,
         city,
         wins,
@@ -19,7 +19,6 @@ class Team:
         sf,
         pf,
         c,
-        id=None
     ):
         self.id = id
         self.team = team
@@ -177,21 +176,29 @@ class Team:
                     return cls.instance_from_db(row)
         except Exception as e:
             print("Error finding team by id:", e)
+
     @classmethod
     def find_by_city(cls, city):
         try:
             with CONN:
-                CURSOR.execute("SELECT * FROM teams WHERE LOWER(city) LIKE LOWER(?)", (f"%{city}%",))
+                CURSOR.execute(
+                    "SELECT * FROM teams WHERE LOWER(city) LIKE LOWER(?)",
+                    (f"%{city}%",),
+                )
                 row = CURSOR.fetchone()
                 if row:
                     return cls.instance_from_db(row)
         except Exception as e:
             print("Error finding team by name:", e)
+
     @classmethod
     def find_by_name(cls, name):
         try:
             with CONN:
-                CURSOR.execute("SELECT * FROM teams WHERE LOWER(team) LIKE LOWER(?)", (f"%{name}%",))
+                CURSOR.execute(
+                    "SELECT * FROM teams WHERE LOWER(team) LIKE LOWER(?)",
+                    (f"%{name}%",),
+                )
                 row = CURSOR.fetchone()
                 if row:
                     return cls.instance_from_db(row)
@@ -208,8 +215,6 @@ class Team:
             if player.name.lower() != player_name.lower()
         ]
 
-
-from models import CONN, CURSOR  # Corrected import statement
 
 # class Team:
 #     def __init__(self, nba_team, city, wins, losses, championships, pg, sg, sf, pf, c):
