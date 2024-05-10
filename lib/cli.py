@@ -28,8 +28,6 @@ def main():
         elif choice == "3":
             create_user()
         elif choice == "4":
-            delete_user()
-        elif choice == "5":
             exit_program()
         else:
             print("Invalid choice!")
