@@ -15,7 +15,7 @@ EXIT_WORDS = ["exit", "quit"]
 def welcome():
     click.clear()
     console = Console()
-    console.rule("[bold purple] NBA-STASTICS :basketball:")
+    console.rule("[bold purple] NBA-STASTICS 23/24 :basketball:")
     console.print(
         """  
   _  _ ___   _     _____ ___    _   ___ _  _____ ___ 
@@ -34,8 +34,7 @@ def menu():
     console.print("1. How To Use")
     console.print("2. Get Started")
     console.print("3. Create user")
-    console.print("4. Delete user")
-    console.print("5. Exit")
+    console.print("4. Exit")
 
 
 # subMenu1
@@ -58,7 +57,7 @@ def start():
         elif user_input == "2":
             team_roster()
         elif user_input == "3":
-            pass
+            manage_users()
         elif user_input == "4":
             exit_program()
         else:
@@ -333,6 +332,29 @@ def team_roster():
         console.print(f"Assists: {player.assists}")
         console.print(f"Rebounds: {player.rebounds}")
         console.print()
+
+
+def manage_users():
+    while True:
+        console.print(
+            "Please select an option: ", style="bold underline purple on white"
+        )
+        console.print("1. Create user")
+        console.print("2. Delete user")
+        console.print("3. Exit")
+
+        user_input = input("> ").strip().lower()
+
+        if user_input in EXIT_WORDS:
+            exit_program()
+        elif user_input == "1":
+            create_user()
+        elif user_input == "2":
+            delete_user()
+        elif user_input == "3":
+            exit_program()
+        else:
+            print("Invalid choice!")
 
 
 def create_user():
