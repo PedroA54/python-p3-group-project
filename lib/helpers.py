@@ -24,7 +24,7 @@ def welcome():
  |_|\_|___/_/ \_\   |_| |_|_\/_/ \_\___|_|\_\___|_|_\\
                                                      
 """,
-        style="green",
+        style="blue",
     )
 
 
@@ -127,6 +127,7 @@ def team_stats():
 
 
 def all_teams(teams, page_number, teams_per_page):
+    teams = load_teams_from_db()
     while True:
         start_index = (page_number - 1) * teams_per_page
         end_index = min(start_index + teams_per_page, len(teams))
